@@ -19,8 +19,8 @@ import en from '@angular/common/locales/en';
 import { FormsModule } from '@angular/forms';
 import { provideAnimationsAsync } from '@angular/platform-browser/animations/async';
 import { provideHttpClient } from '@angular/common/http';
-import { icons } from './zorro-ng/icons-provider';
 import { QuestionsEffects } from './store/questions.effects';
+import { icons } from './icons-provider';
 
 registerLocaleData(en);
 
