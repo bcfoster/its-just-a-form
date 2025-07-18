@@ -9,7 +9,7 @@ import { NzSplitterModule } from 'ng-zorro-antd/splitter';
 import { NzButtonModule } from 'ng-zorro-antd/button';
 import { LetDirective, PushPipe } from '@ngrx/component';
 import { Store } from '@ngrx/store';
-import { Question } from './store';
+import { initialQuestions, Question } from './store';
 import { Observable } from 'rxjs';
 import * as questionsSelectors from './store/questions.selectors';
 import { questionsActions } from './store/questions.actions';
@@ -24,7 +24,6 @@ import {
   ToggleInput,
 } from './inputs';
 import { CheckboxInput } from './inputs/checkbox-input';
-import { initialQuestions } from './store/questions.reducer';
 
 @Component({
   changeDetection: ChangeDetectionStrategy.OnPush,
@@ -163,6 +162,7 @@ import { initialQuestions } from './store/questions.reducer';
 export class App implements OnInit {
   private readonly store = inject(Store);
 
+  // TODO: use type unknown?
   protected readonly form$: Observable<FormArrayState<string | boolean | null>>;
   protected readonly questions$: Observable<Question[]>;
 

@@ -34,3 +34,39 @@ export interface Question {
   icon: string;
   options?: string[];
 }
+
+export const initialQuestions: Question[] = [
+  {
+    id: '0',
+    type: 'text',
+    label: 'Preferred first name',
+    icon: 'text_format',
+  },
+  {
+    id: '1',
+    type: 'textarea',
+    label: 'Additional details',
+    icon: 'subject',
+  },
+  { id: '2', type: 'date', label: 'Date of birth', icon: 'calendar_month' },
+  {
+    id: '3',
+    type: 'select',
+    label: 'Gender',
+    icon: 'arrow_drop_down',
+    options: ['Male', 'Female', 'Other'],
+  },
+  {
+    id: '4',
+    type: 'toggle',
+    label: 'Unable to work due to injury',
+    icon: 'toggle_on',
+  },
+  {
+    id: '5',
+    type: 'checkbox',
+    label: 'Indicate your injuries',
+    icon: 'checklist',
+  },
+];
+
