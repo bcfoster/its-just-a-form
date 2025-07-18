@@ -1,14 +1,12 @@
 import { Component, input } from '@angular/core';
-import { MatSlideToggleModule } from '@angular/material/slide-toggle';
 import { FormStep } from '../form-step';
+import { NzSwitchComponent } from 'ng-zorro-antd/switch';
 
 @Component({
   selector: 'app-toggle-input',
-  imports: [MatSlideToggleModule],
+  imports: [NzSwitchComponent],
   template: `
-    <mat-slide-toggle>
-      {{ step().subtitle }}
-    </mat-slide-toggle>
+    <nz-switch />
   `,
   styles: ``,
 })

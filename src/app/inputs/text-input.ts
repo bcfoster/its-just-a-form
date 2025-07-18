@@ -1,16 +1,10 @@
 import { Component, input } from '@angular/core';
-import { MatInputModule } from '@angular/material/input';
 import { FormStep } from '../form-step';
 
 @Component({
   selector: 'app-text-input',
-  imports: [MatInputModule],
-  template: `
-    <mat-form-field>
-      <mat-label>{{ step().subtitle }}</mat-label>
-      <input matInput />
-    </mat-form-field>
-  `,
+  imports: [],
+  template: ``,
   styles: ``,
 })
 export class TextInput {
