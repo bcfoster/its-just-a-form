@@ -1,5 +1,4 @@
 import { Component, input } from '@angular/core';
-import { FormStep } from '../form-step';
 import { NzSwitchComponent } from 'ng-zorro-antd/switch';
 
 @Component({
@@ -10,6 +9,4 @@ import { NzSwitchComponent } from 'ng-zorro-antd/switch';
   `,
   styles: ``,
 })
-export class ToggleInput {
-  step = input.required<FormStep>();
-}
+export class ToggleInput {}

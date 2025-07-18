@@ -1,5 +1,4 @@
 import { Component, input } from '@angular/core';
-import { FormStep } from '../form-step';
 
 @Component({
   selector: 'app-textarea-input',
@@ -7,6 +6,4 @@ import { FormStep } from '../form-step';
   template: ``,
   styles: ``,
 })
-export class TextareaInput {
-  step = input.required<FormStep>();
-}
+export class TextareaInput {}

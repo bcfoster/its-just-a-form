@@ -1,10 +1,8 @@
-import { Component, input } from '@angular/core';
-import { CdkDrag } from '@angular/cdk/drag-drop';
-import { FormStep } from './form-step';
+import { Component } from '@angular/core';
 
 @Component({
   selector: 'app-form-step-list-item',
-  imports: [CdkDrag],
+  imports: [],
   template: `
     <!--    <mat-list-item cdkDrag style="cursor: move">-->
     <!--      <mat-icon matListItemIcon>-->
@@ -12,10 +10,9 @@ import { FormStep } from './form-step';
     <!--      </mat-icon>-->
     <!--      <span matListItemTitle>{{ step().title }}</span>-->
     <!--      <span matListItemLine>{{ step().subtitle }}</span>-->
+    <!--      <span matListItemMeta></span>-->
     <!--    </mat-list-item>-->
   `,
   styles: ``,
 })
-export class FormStepListItem {
-  step = input.required<FormStep>();
-}
+export class FormStepListItem {}

@@ -8,9 +8,10 @@ import {
 import { provideRouter } from '@angular/router';
 
 import { routes } from './app.routes';
-import { provideStore } from '@ngrx/store';
+import { provideState, provideStore } from '@ngrx/store';
 import { provideEffects } from '@ngrx/effects';
 import { provideStoreDevtools } from '@ngrx/store-devtools';
+import { questionsFeature } from './store/questions.feature';
 import { provideNzIcons } from 'ng-zorro-antd/icon';
 import { en_US, provideNzI18n } from 'ng-zorro-antd/i18n';
 import { registerLocaleData } from '@angular/common';
@@ -30,6 +31,7 @@ export const appConfig: ApplicationConfig = {
     provideEffects(),
     provideStore(),
     provideStoreDevtools({ maxAge: 25, logOnly: !isDevMode() }),
+    provideState(questionsFeature),
     provideNzIcons(icons),
     provideNzI18n(en_US),
     importProvidersFrom(FormsModule),
