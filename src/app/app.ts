@@ -58,8 +58,13 @@ import { CheckboxInput } from './inputs/checkbox-input';
               class="example-list w-full"
             >
               @for (question of questions; track question) {
-                <div cdkDrag class="p-4 example-box">
-                  {{ question.label }}
+                <div cdkDrag class="p-4 example-box flex">
+                  <div>
+                    {{ question.label }}
+                  </div>
+                  <div id="edit" class="invisible">
+                    <a href="#">edit</a>
+                  </div>
                 </div>
               }
             </div>
@@ -156,6 +161,10 @@ import { CheckboxInput } from './inputs/checkbox-input';
     .example-list.cdk-drop-list-dragging
       .example-box:not(.cdk-drag-placeholder) {
       /*transition: transform 250ms cubic-bezier(0, 0, 0.2, 1);*/
+    }
+    
+    .example-box:hover div#edit {
+      visibility: visible !important;
     }
   `,
 })
