@@ -24,6 +24,7 @@ import {
   ToggleInput,
 } from './inputs';
 import { CheckboxInput } from './inputs/checkbox-input';
+import { initialQuestions } from './store/questions.reducer';
 
 @Component({
   changeDetection: ChangeDetectionStrategy.OnPush,
@@ -58,7 +59,7 @@ import { CheckboxInput } from './inputs/checkbox-input';
               class="example-list w-full"
             >
               @for (question of questions; track question) {
-                <div cdkDrag class="p-2 example-box">
+                <div cdkDrag class="p-4 example-box">
                   {{ question.label }}
                 </div>
               }
@@ -171,7 +172,9 @@ export class App implements OnInit {
   }
 
   ngOnInit(): void {
-    this.store.dispatch(questionsActions.initialize());
+    this.store.dispatch(
+      questionsActions.initialize({ questions: initialQuestions }),
+    );
   }
 
   drop(event: CdkDragDrop<string[]>) {

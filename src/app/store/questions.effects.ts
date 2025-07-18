@@ -1,10 +1,10 @@
 import { Actions, createEffect, ofType } from '@ngrx/effects';
 import { inject, Injectable } from '@angular/core';
 import { questionsActions } from './questions.actions';
-import { map, withLatestFrom } from 'rxjs';
-import { SetValueAction } from 'ngrx-forms';
 import { Store } from '@ngrx/store';
 import * as questionsSelectors from './questions.selectors';
+import { map, withLatestFrom } from 'rxjs';
+import { SetValueAction } from 'ngrx-forms';
 
 @Injectable()
 export class QuestionsEffects {
@@ -19,17 +19,13 @@ export class QuestionsEffects {
         const values = questions.map((q) => {
           switch (q.type) {
             case 'checkbox':
+            case 'toggle':
               return false;
             case 'date':
               return null;
             case 'select':
-              return '';
             case 'text':
-              return '';
             case 'textarea':
-              return '';
-            case 'toggle':
-              return false;
             default:
               return '';
           }
