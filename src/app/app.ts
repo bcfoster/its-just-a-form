@@ -1,53 +1,52 @@
-import { Component, inject } from '@angular/core';
 import {
-  CdkDrag,
-  CdkDragDrop,
-  CdkDropList,
-  moveItemInArray,
-} from '@angular/cdk/drag-drop';
+  ChangeDetectionStrategy,
+  Component,
+  inject,
+  OnInit,
+} from '@angular/core';
+import { CdkDrag, CdkDragDrop, CdkDropList } from '@angular/cdk/drag-drop';
 import { NzSplitterModule } from 'ng-zorro-antd/splitter';
 import { NzButtonModule } from 'ng-zorro-antd/button';
-import { PushPipe } from '@ngrx/component';
+import { LetDirective, PushPipe } from '@ngrx/component';
 import { Store } from '@ngrx/store';
 import { Question } from './store';
 import { Observable } from 'rxjs';
 import * as questionsSelectors from './store/questions.selectors';
 import { questionsActions } from './store/questions.actions';
 import { NzListModule } from 'ng-zorro-antd/list';
-import { NzInputModule } from 'ng-zorro-antd/input';
-import {
-  FormArrayState,
-  NgrxFormsModule,
-  NgrxValueConverters,
-} from 'ngrx-forms';
+import { FormArrayState, NgrxFormsModule } from 'ngrx-forms';
 import { NzFormModule } from 'ng-zorro-antd/form';
-import { NzSwitchComponent } from 'ng-zorro-antd/switch';
-import { NzSelectModule } from 'ng-zorro-antd/select';
-import { LowerCasePipe } from '@angular/common';
-import { NzCheckboxModule } from 'ng-zorro-antd/checkbox';
-import { NzDatePickerModule } from 'ng-zorro-antd/date-picker';
+import {
+  DateInput,
+  SelectInput,
+  TextareaInput,
+  TextInput,
+  ToggleInput,
+} from './inputs';
+import { CheckboxInput } from './inputs/checkbox-input';
 
 @Component({
+  changeDetection: ChangeDetectionStrategy.OnPush,
   selector: 'app-root',
   imports: [
+    CdkDrag,
     CdkDropList,
+    NgrxFormsModule,
     NzButtonModule,
+    NzFormModule,
     NzListModule,
-    NzInputModule,
     NzSplitterModule,
     PushPipe,
-    CdkDrag,
-    NgrxFormsModule,
-    NzFormModule,
-    NzSwitchComponent,
-    NzSelectModule,
-    LowerCasePipe,
-    NzCheckboxModule,
-    NzDatePickerModule,
+    LetDirective,
+    DateInput,
+    SelectInput,
+    ToggleInput,
+    TextareaInput,
+    TextInput,
+    CheckboxInput,
   ],
   template: `
     @let questions = questions$ | ngrxPush;
-    @let form = form$ | ngrxPush;
 
     <nz-splitter>
       <nz-splitter-panel nzDefaultSize="20%" nzMin="20%" nzMax="99%">
@@ -73,80 +72,47 @@ import { NzDatePickerModule } from 'ng-zorro-antd/date-picker';
         </div>
       </nz-splitter-panel>
       <nz-splitter-panel>
-        @if (form && questions) {
-          <div class="px-3">
-            <form
-              class="flex flex-col gap-y-4"
-              nz-form
-              [ngrxFormState]="form"
-              autocomplete="off"
-            >
+        <div class="p-3">
+          <form
+            *ngrxLet="form$ as form"
+            nz-form
+            [ngrxFormState]="form"
+            autocomplete="off"
+          >
+            <div class="flex flex-col gap-y-3">
               @for (question of questions; track question; let index = $index) {
                 <div class="flex flex-col">
-                  <nz-form-label nzRequired nzFor="text" nzLabelAlign="left">
+                  <nz-form-label nzRequired nzLabelAlign="left">
                     {{ question.label }}
                   </nz-form-label>
                   @switch (question.type) {
                     @case ('checkbox') {
-                      <label
-                        nz-checkbox
-                        [ngrxFormControlState]="form.controls[index]"
-                      >
-                        Head
-                      </label>
-                      <br />
-                      <label nz-checkbox>Chest</label>
-                      <br />
-                      <label nz-checkbox>Torso</label>
-                      <br />
-                      <label nz-checkbox>Arms</label>
-                      <br />
-                      <label nz-checkbox>Legs</label>
+                      <app-checkbox-input [control]="form.controls[index]" />
                     }
                     @case ('date') {
-                      <nz-date-picker
-                        [ngrxFormControlState]="form.controls[index]"
-                        [ngrxValueConverter]="dateValueConverter"
-                      ></nz-date-picker>
+                      <app-date-input [control]="form.controls[index]" />
                     }
                     @case ('select') {
-                      <nz-select
-                        nzPlaceHolder="Select an option"
-                        [ngrxFormControlState]="form.controls[index]"
-                      >
-                        @for (option of question.options; track option) {
-                          <nz-option
-                            [nzValue]="option | lowercase"
-                            [nzLabel]="option"
-                          ></nz-option>
-                        }
-                      </nz-select>
+                      <app-select-input
+                        [control]="form.controls[index]"
+                        [options]="question.options ?? []"
+                      />
                     }
                     @case ('text') {
-                      <input
-                        nz-input
-                        id="text"
-                        [ngrxFormControlState]="form.controls[index]"
-                      />
+                      <app-text-input [control]="form.controls[index]" />
                     }
                     @case ('textarea') {
-                      <textarea
-                        rows="4"
-                        nz-input
-                        [ngrxFormControlState]="form.controls[index]"
-                      ></textarea>
+                      <app-textarea-input [control]="form.controls[index]" />
                     }
                     @case ('toggle') {
-                      <nz-switch
-                        [ngrxFormControlState]="form.controls[index]"
-                      />
+                      <app-toggle-input [control]="form.controls[index]" />
                     }
                   }
                 </div>
               }
-            </form>
-          </div>
-        }
+            </div>
+          </form>
+        </div>
       </nz-splitter-panel>
     </nz-splitter>
   `,
@@ -193,18 +159,19 @@ import { NzDatePickerModule } from 'ng-zorro-antd/date-picker';
     }
   `,
 })
-export class App {
-  protected title = 'its-just-a-form';
+export class App implements OnInit {
   private readonly store = inject(Store);
 
   protected readonly form$: Observable<FormArrayState<string | boolean | null>>;
   protected readonly questions$: Observable<Question[]>;
 
-  dateValueConverter = NgrxValueConverters.dateToISOString;
-
   constructor() {
     this.form$ = this.store.select(questionsSelectors.selectForm);
     this.questions$ = this.store.select(questionsSelectors.selectQuestions);
+  }
+
+  ngOnInit(): void {
+    this.store.dispatch(questionsActions.initialize());
   }
 
   drop(event: CdkDragDrop<string[]>) {

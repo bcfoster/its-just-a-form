@@ -1,33 +1,25 @@
 import { Component, input } from '@angular/core';
-import { Question } from '../store';
 import {
   FormControlState,
   NgrxFormsModule,
   NgrxValueConverters,
 } from 'ngrx-forms';
+import { NzDatePickerModule } from 'ng-zorro-antd/date-picker';
 
 @Component({
   selector: 'app-date-input',
-  imports: [NgrxFormsModule],
+  imports: [NgrxFormsModule, NzDatePickerModule],
   template: `
-    <!--    <mat-form-field>-->
-    <!--      <mat-label>{{ question().label }}</mat-label>-->
-    <!--      <input-->
-    <!--        matInput-->
-    <!--        [matDatepicker]="picker"-->
-    <!--        [ngrxFormControlState]="control()"-->
-    <!--        [ngrxValueConverter]="dateValueConverter"-->
-    <!--      />-->
-    <!--      <mat-hint>MM/DD/YYYY</mat-hint>-->
-    <!--      <mat-datepicker-toggle-->
-    <!--        matIconSuffix-->
-    <!--        [for]="picker"-->
-    <!--      ></mat-datepicker-toggle>-->
-    <!--      <mat-datepicker #picker></mat-datepicker>-->
-    <!--    </mat-form-field>-->
+    <nz-date-picker
+      nzPlacement="bottomLeft"
+      [ngrxFormControlState]="control()"
+      [ngrxValueConverter]="dateValueConverter"
+    ></nz-date-picker>
   `,
   styles: ``,
 })
 export class DateInput {
+  control = input.required<FormControlState<string | null>>();
+
   dateValueConverter = NgrxValueConverters.dateToISOString;
 }

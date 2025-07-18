@@ -20,6 +20,7 @@ import { FormsModule } from '@angular/forms';
 import { provideAnimationsAsync } from '@angular/platform-browser/animations/async';
 import { provideHttpClient } from '@angular/common/http';
 import { icons } from './zorro-ng/icons-provider';
+import { QuestionsEffects } from './store/questions.effects';
 
 registerLocaleData(en);
 
@@ -28,7 +29,7 @@ export const appConfig: ApplicationConfig = {
     provideBrowserGlobalErrorListeners(),
     provideZonelessChangeDetection(),
     provideRouter(routes),
-    provideEffects(),
+    provideEffects([QuestionsEffects]),
     provideStore(),
     provideStoreDevtools({ maxAge: 25, logOnly: !isDevMode() }),
     provideState(questionsFeature),

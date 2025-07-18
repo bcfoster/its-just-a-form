@@ -1,12 +1,15 @@
 import { Component, input } from '@angular/core';
-import { NzSwitchComponent } from 'ng-zorro-antd/switch';
+import { NzSwitchModule } from 'ng-zorro-antd/switch';
+import { FormControlState, NgrxFormsModule } from 'ngrx-forms';
 
 @Component({
   selector: 'app-toggle-input',
-  imports: [NzSwitchComponent],
+  imports: [NzSwitchModule, NgrxFormsModule],
   template: `
-    <nz-switch />
+    <nz-switch [ngrxFormControlState]="control()" />
   `,
   styles: ``,
 })
-export class ToggleInput {}
+export class ToggleInput {
+  control = input.required<FormControlState<boolean>>();
+}

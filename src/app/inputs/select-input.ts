@@ -1,26 +1,27 @@
 import { Component, input } from '@angular/core';
 import { FormControlState, NgrxFormsModule } from 'ngrx-forms';
-import { Question } from '../store';
+import { NzSelectModule } from 'ng-zorro-antd/select';
+import { LowerCasePipe } from '@angular/common';
 
 @Component({
   selector: 'app-select-input',
-  imports: [NgrxFormsModule],
+  imports: [NgrxFormsModule, NzSelectModule, LowerCasePipe],
   template: `
-    <!--    <mat-form-field>-->
-    <!--      <mat-label>{{ question().label }}</mat-label>-->
-    <!--      <select-->
-    <!--        matNativeControl-->
-    <!--        [name]="question().label"-->
-    <!--        [ngrxFormControlState]="control()"-->
-    <!--      >-->
-    <!--        @for (option of question().options; track option) {-->
-    <!--          <option [value]="option">-->
-    <!--            {{ option }}-->
-    <!--          </option>-->
-    <!--        }-->
-    <!--      </select>-->
-    <!--    </mat-form-field>-->
+    <nz-select
+      nzPlaceHolder="Select an option"
+      [ngrxFormControlState]="control()"
+    >
+      @for (option of options(); track option) {
+        <nz-option
+          [nzValue]="option | lowercase"
+          [nzLabel]="option"
+        ></nz-option>
+      }
+    </nz-select>
   `,
   styles: ``,
 })
-export class SelectInput {}
+export class SelectInput {
+  control = input.required<FormControlState<string>>();
+  options = input.required<string[]>();
+}

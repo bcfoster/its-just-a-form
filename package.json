@@ -9,6 +9,11 @@
     "lint": "ng lint"
   },
   "private": true,
+  "overrides": {
+    "ngrx-forms": {
+      "@ngrx/store": "$@ngrx/store"
+    }
+  },
   "dependencies": {
     "@angular/cdk": "^20.1.2",
     "@angular/common": "^20.1.2",

@@ -47,18 +47,19 @@ export interface State {
 
 export const initialState: State = {
   questions: initialQuestions,
-  form: createFormArrayState(FORM_ID, ['Test', 'Test', null, '', false, false]),
+  form: createFormArrayState(FORM_ID, []),
 };
 
 export const reducer = createReducer(
   initialState,
   onNgrxForms(),
-
   on(questionsActions.move, (state, action) => {
     const questions = [...state.questions];
     const temp = state.questions[action.previousIndex];
     questions[action.previousIndex] = questions[action.currentIndex];
     questions[action.currentIndex] = temp;
+
+    // TODO: positions in form need to be adjusted as well - that's why date keeps breaking it must be an iso date string or null
 
     return {
       ...state,
