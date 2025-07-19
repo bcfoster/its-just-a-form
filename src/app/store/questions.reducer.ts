@@ -85,6 +85,12 @@ export const initialState: State = {
         options: [],
         validators: [],
       },
+      {
+        type: 'radio',
+        label: 'Favourite captain',
+        options: [],
+        validators: [],
+      },
     ],
   }),
 };

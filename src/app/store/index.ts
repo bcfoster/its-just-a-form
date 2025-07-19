@@ -3,6 +3,7 @@ import { v7 as uuidv7 } from 'uuid';
 export type InputTypes =
   | 'checkbox'
   | 'date'
+  | 'radio'
   | 'select'
   | 'text'
   | 'textarea'
@@ -74,5 +75,12 @@ export const initialQuestions: Question[] = [
     type: 'checkbox',
     label: 'Indicate your injuries',
     icon: 'checklist',
+  },
+  {
+    id: uuidv7(),
+    type: 'radio',
+    label: 'Favourite captain:',
+    icon: '',
+    options: ['Kirk', 'Picard', 'Sisko', 'Janeway'],
   },
 ];

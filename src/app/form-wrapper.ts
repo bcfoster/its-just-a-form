@@ -12,6 +12,7 @@ import {
 import { LetDirective } from '@ngrx/component';
 import { NzFormModule } from 'ng-zorro-antd/form';
 import { Question } from './store';
+import { RadioInput } from './inputs/radio-input';
 
 @Component({
   selector: 'app-form-wrapper',
@@ -25,6 +26,7 @@ import { Question } from './store';
     TextInput,
     CheckboxInput,
     NzFormModule,
+    RadioInput,
   ],
   template: `
     <form
@@ -49,6 +51,12 @@ import { Question } from './store';
               @case ('date') {
                 <app-date-input
                   [control]="form.controls[index].controls.someDate"
+                />
+              }
+              @case ('radio') {
+                <app-radio-input
+                  [control]="form.controls[index].controls.someText"
+                  [options]="question.options ?? []"
                 />
               }
               @case ('select') {

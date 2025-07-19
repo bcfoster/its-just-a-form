@@ -59,6 +59,7 @@ import { PushPipe } from '@ngrx/component';
                 option of [
                   'Checkbox',
                   'Date',
+                  'Radio',
                   'Select',
                   'Text',
                   'Textarea',

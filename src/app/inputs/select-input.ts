@@ -7,6 +7,7 @@ import { LowerCasePipe } from '@angular/common';
   selector: 'app-select-input',
   imports: [NgrxFormsModule, NzSelectModule, LowerCasePipe],
   template: `
+    <!-- TODO: there's no undefined check wrapper around this - it works? -->
     <nz-select
       nzPlaceHolder="Select an option"
       [ngrxFormControlState]="$any(control())"
