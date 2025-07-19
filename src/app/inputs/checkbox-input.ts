@@ -1,5 +1,5 @@
 import { Component, input } from '@angular/core';
-import { FormControlState, NgrxFormsModule } from 'ngrx-forms';
+import { FormArrayState, NgrxFormsModule } from 'ngrx-forms';
 import { NzCheckboxModule } from 'ng-zorro-antd/checkbox';
 
 @Component({
@@ -8,20 +8,28 @@ import { NzCheckboxModule } from 'ng-zorro-antd/checkbox';
   template: `
     @if (control() !== undefined) {
       <div>
-        <label nz-checkbox [ngrxFormControlState]="$any(control())">Head</label>
-        <br />
-        <label nz-checkbox>Chest</label>
-        <br />
-        <label nz-checkbox>Torso</label>
-        <br />
-        <label nz-checkbox>Arms</label>
-        <br />
-        <label nz-checkbox>Legs</label>
+        @for (
+          option of options();
+          track option;
+          let i = $index;
+          let last = $last
+        ) {
+          <label
+            nz-checkbox
+            [ngrxFormControlState]="$any(control()!.controls[i])"
+          >
+            {{ option }}
+          </label>
+          @if (!last) {
+            <br />
+          }
+        }
       </div>
     }
   `,
   styles: ``,
 })
 export class CheckboxInput {
-  control = input.required<FormControlState<boolean | undefined> | undefined>();
+  control = input.required<FormArrayState<boolean> | undefined>();
+  options = input.required<string[]>();
 }

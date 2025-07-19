@@ -15,6 +15,7 @@ export interface Form {
   // TODO: try using 'or null' optional property
   someText?: string;
   someBoolean?: boolean;
+  someBooleans?: boolean[];
   someDate?: string | null;
 }
 
@@ -62,6 +63,7 @@ const mapToForms = (questions: Question[]): Form[] =>
   questions.map((q) => {
     switch (q.type) {
       case 'checkbox':
+        return { someBooleans: [false, false, false, false, false] };
       case 'toggle':
         return { someBoolean: false };
       case 'date':

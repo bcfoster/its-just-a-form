@@ -94,7 +94,14 @@ import { Form } from './store/questions.reducer';
                   @switch (question.type) {
                     @case ('checkbox') {
                       <app-checkbox-input
-                        [control]="form.controls[index].controls.someBoolean"
+                        [control]="form.controls[index].controls.someBooleans"
+                        [options]="[
+                          'Head',
+                          'Shoulders',
+                          'Back',
+                          'Arms',
+                          'Legs',
+                        ]"
                       />
                     }
                     @case ('date') {
