@@ -1,5 +1,5 @@
 import { Component, inject, input } from '@angular/core';
-import { NgrxFormsModule } from 'ngrx-forms';
+import { FormGroupState, NgrxFormsModule } from 'ngrx-forms';
 import { NzFormModule } from 'ng-zorro-antd/form';
 import { CdkDrag, CdkDragDrop, CdkDropList } from '@angular/cdk/drag-drop';
 import { NzTypographyModule } from 'ng-zorro-antd/typography';
@@ -7,7 +7,12 @@ import { questionsActions } from './store/questions.actions';
 import { Store } from '@ngrx/store';
 import { Question } from './store';
 import { NzButtonModule } from 'ng-zorro-antd/button';
-import { NzIconModule } from 'ng-zorro-antd/icon';
+import { NzSelectModule } from 'ng-zorro-antd/select';
+import { LowerCasePipe } from '@angular/common';
+import { Observable } from 'rxjs';
+import { BuilderForm } from './store/questions.reducer';
+import * as questionsSelectors from './store/questions.selectors';
+import { PushPipe } from '@ngrx/component';
 
 @Component({
   selector: 'app-form-input-list',
@@ -18,28 +23,59 @@ import { NzIconModule } from 'ng-zorro-antd/icon';
     NzButtonModule,
     NzFormModule,
     NzTypographyModule,
-    NzIconModule,
     CdkDrag,
+    NzSelectModule,
+    LowerCasePipe,
+    PushPipe,
   ],
   template: `
-    <h5 nz-typography>Personal information</h5>
-    <div
-      cdkDropList
-      (cdkDropListDropped)="drop($event)"
-      class="example-list w-full"
-    >
-      @for (question of questions(); track question) {
-        <div cdkDrag class="p-4 example-box flex">
-          <nz-icon [nzType]="question.icon" />
-          <div>
-            {{ question.label }}
+    @let form = form$ | ngrxPush;
+
+    @if (form) {
+      <h5 nz-typography>Personal information</h5>
+      <div
+        cdkDropList
+        (cdkDropListDropped)="drop($event)"
+        class="example-list w-full"
+      >
+        @for (question of questions(); track question; let index = $index) {
+          <div cdkDrag class="example-box flex flex-col p-3 gap-y-2">
+            <div class="flex justify-between">
+              <div>
+                {{ question.label }}
+              </div>
+              <div id="edit" class="invisible">
+                <a href="#">edit</a>
+              </div>
+            </div>
+            <nz-select
+              nzPlaceHolder="Select an option"
+              [nzDropdownMatchSelectWidth]="false"
+              [ngrxFormControlState]="
+                form.controls.formControls.controls[index].controls.type
+              "
+            >
+              @for (
+                option of [
+                  'Checkbox',
+                  'Date',
+                  'Select',
+                  'Text',
+                  'Textarea',
+                  'Toggle',
+                ];
+                track option
+              ) {
+                <nz-option
+                  [nzValue]="option | lowercase"
+                  [nzLabel]="option"
+                ></nz-option>
+              }
+            </nz-select>
           </div>
-          <div id="edit" class="invisible">
-            <a href="#">edit</a>
-          </div>
-        </div>
-      }
-    </div>
+        }
+      </div>
+    }
   `,
   styles: `
     .example-list {
@@ -49,13 +85,8 @@ import { NzIconModule } from 'ng-zorro-antd/icon';
     .example-box {
       border-bottom: solid 1px #ccc;
       color: rgba(0, 0, 0, 0.87);
-      display: flex;
-      flex-direction: row;
-      align-items: center;
-      justify-content: space-between;
       box-sizing: border-box;
       cursor: move;
-      background: white;
     }
 
     .cdk-drag-preview {
@@ -94,7 +125,13 @@ import { NzIconModule } from 'ng-zorro-antd/icon';
 export class FormInputList {
   private readonly store = inject(Store);
 
+  protected readonly form$: Observable<FormGroupState<BuilderForm>>;
+
   questions = input.required<Question[]>();
+
+  constructor() {
+    this.form$ = this.store.select(questionsSelectors.selectBuilder);
+  }
 
   drop(event: CdkDragDrop<string[]>) {
     this.store.dispatch(
