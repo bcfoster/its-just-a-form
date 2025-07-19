@@ -6,10 +6,12 @@ import { NzInputDirective } from 'ng-zorro-antd/input';
   selector: 'app-text-input',
   imports: [NgrxFormsModule, NzInputDirective],
   template: `
-    <input nz-input [ngrxFormControlState]="control()" />
+    @if (control() !== undefined) {
+      <input nz-input [ngrxFormControlState]="$any(control())" />
+    }
   `,
   styles: ``,
 })
 export class TextInput {
-  control = input.required<FormControlState<string>>();
+  control = input.required<FormControlState<string | undefined> | undefined>();
 }

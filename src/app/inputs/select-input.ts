@@ -9,7 +9,7 @@ import { LowerCasePipe } from '@angular/common';
   template: `
     <nz-select
       nzPlaceHolder="Select an option"
-      [ngrxFormControlState]="control()"
+      [ngrxFormControlState]="$any(control())"
     >
       @for (option of options(); track option) {
         <nz-option
@@ -22,6 +22,6 @@ import { LowerCasePipe } from '@angular/common';
   styles: ``,
 })
 export class SelectInput {
-  control = input.required<FormControlState<string>>();
+  control = input.required<FormControlState<string | undefined> | undefined>();
   options = input.required<string[]>();
 }

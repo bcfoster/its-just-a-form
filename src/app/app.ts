@@ -24,6 +24,7 @@ import {
   ToggleInput,
 } from './inputs';
 import { CheckboxInput } from './inputs/checkbox-input';
+import { Form } from './store/questions.reducer';
 
 @Component({
   changeDetection: ChangeDetectionStrategy.OnPush,
@@ -92,25 +93,35 @@ import { CheckboxInput } from './inputs/checkbox-input';
                   </nz-form-label>
                   @switch (question.type) {
                     @case ('checkbox') {
-                      <app-checkbox-input [control]="form.controls[index]" />
+                      <app-checkbox-input
+                        [control]="form.controls[index].controls.someBoolean"
+                      />
                     }
                     @case ('date') {
-                      <app-date-input [control]="form.controls[index]" />
+                      <app-date-input
+                        [control]="form.controls[index].controls.someDate"
+                      />
                     }
                     @case ('select') {
                       <app-select-input
-                        [control]="form.controls[index]"
+                        [control]="form.controls[index].controls.someText"
                         [options]="question.options ?? []"
                       />
                     }
                     @case ('text') {
-                      <app-text-input [control]="form.controls[index]" />
+                      <app-text-input
+                        [control]="form.controls[index].controls.someText"
+                      />
                     }
                     @case ('textarea') {
-                      <app-textarea-input [control]="form.controls[index]" />
+                      <app-textarea-input
+                        [control]="form.controls[index].controls.someText"
+                      />
                     }
                     @case ('toggle') {
-                      <app-toggle-input [control]="form.controls[index]" />
+                      <app-toggle-input
+                        [control]="form.controls[index].controls.someBoolean"
+                      />
                     }
                   }
                 </div>
@@ -162,7 +173,7 @@ import { CheckboxInput } from './inputs/checkbox-input';
       .example-box:not(.cdk-drag-placeholder) {
       /*transition: transform 250ms cubic-bezier(0, 0, 0.2, 1);*/
     }
-    
+
     .example-box:hover div#edit {
       visibility: visible !important;
     }
@@ -172,7 +183,7 @@ export class App implements OnInit {
   private readonly store = inject(Store);
 
   // TODO: use type unknown?
-  protected readonly form$: Observable<FormArrayState<string | boolean | null>>;
+  protected readonly form$: Observable<FormArrayState<Form>>;
   protected readonly questions$: Observable<Question[]>;
 
   constructor() {

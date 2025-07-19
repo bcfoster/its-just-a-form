@@ -10,16 +10,20 @@ import { NzDatePickerModule } from 'ng-zorro-antd/date-picker';
   selector: 'app-date-input',
   imports: [NgrxFormsModule, NzDatePickerModule],
   template: `
-    <nz-date-picker
-      nzPlacement="bottomLeft"
-      [ngrxFormControlState]="control()"
-      [ngrxValueConverter]="dateValueConverter"
-    ></nz-date-picker>
+    @if (control !== undefined) {
+      <nz-date-picker
+        nzPlacement="bottomLeft"
+        [ngrxFormControlState]="$any(control())"
+        [ngrxValueConverter]="dateValueConverter"
+      ></nz-date-picker>
+    }
   `,
   styles: ``,
 })
 export class DateInput {
-  control = input.required<FormControlState<string | null>>();
+  control = input.required<
+    FormControlState<string | null | undefined> | undefined
+  >();
 
   dateValueConverter = NgrxValueConverters.dateToISOString;
 }

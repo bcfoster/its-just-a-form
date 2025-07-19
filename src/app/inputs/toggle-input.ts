@@ -6,10 +6,12 @@ import { FormControlState, NgrxFormsModule } from 'ngrx-forms';
   selector: 'app-toggle-input',
   imports: [NzSwitchModule, NgrxFormsModule],
   template: `
-    <nz-switch [ngrxFormControlState]="control()" />
+    @if (control() !== undefined) {
+      <nz-switch [ngrxFormControlState]="$any(control())" />
+    }
   `,
   styles: ``,
 })
 export class ToggleInput {
-  control = input.required<FormControlState<boolean>>();
+  control = input.required<FormControlState<boolean | undefined> | undefined>();
 }
