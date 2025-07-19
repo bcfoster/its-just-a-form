@@ -7,6 +7,7 @@ import { questionsActions } from './store/questions.actions';
 import { Store } from '@ngrx/store';
 import { Question } from './store';
 import { NzButtonModule } from 'ng-zorro-antd/button';
+import { NzIconModule } from 'ng-zorro-antd/icon';
 
 @Component({
   selector: 'app-form-input-list',
@@ -17,34 +18,27 @@ import { NzButtonModule } from 'ng-zorro-antd/button';
     NzButtonModule,
     NzFormModule,
     NzTypographyModule,
+    NzIconModule,
     CdkDrag,
   ],
   template: `
-    <div class="flex flex-col h-full p-3">
-      <div class="grow overflow-auto">
-        <h5 nz-typography>Personal information</h5>
-        <div
-          cdkDropList
-          (cdkDropListDropped)="drop($event)"
-          class="example-list w-full"
-        >
-          @for (question of questions(); track question) {
-            <div cdkDrag class="p-4 example-box flex">
-              <div>
-                {{ question.label }}
-              </div>
-              <div id="edit" class="invisible">
-                <a href="#">edit</a>
-              </div>
-            </div>
-          }
+    <h5 nz-typography>Personal information</h5>
+    <div
+      cdkDropList
+      (cdkDropListDropped)="drop($event)"
+      class="example-list w-full"
+    >
+      @for (question of questions(); track question) {
+        <div cdkDrag class="p-4 example-box flex">
+          <nz-icon [nzType]="question.icon" />
+          <div>
+            {{ question.label }}
+          </div>
+          <div id="edit" class="invisible">
+            <a href="#">edit</a>
+          </div>
         </div>
-      </div>
-      <div class="flex-none">
-        <button nz-button nzType="primary" nzBlock disabled>
-          Add question
-        </button>
-      </div>
+      }
     </div>
   `,
   styles: `

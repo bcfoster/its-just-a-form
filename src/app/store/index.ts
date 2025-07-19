@@ -1,3 +1,5 @@
+import { v7 as uuidv7 } from 'uuid';
+
 export type InputTypes =
   | 'checkbox'
   | 'date'
@@ -37,36 +39,40 @@ export interface Question {
 
 export const initialQuestions: Question[] = [
   {
-    id: '0',
+    id: uuidv7(),
     type: 'text',
     label: 'Preferred first name',
     icon: 'text_format',
   },
   {
-    id: '1',
+    id: uuidv7(),
     type: 'textarea',
     label: 'Additional details',
     icon: 'subject',
   },
-  { id: '2', type: 'date', label: 'Date of birth', icon: 'calendar_month' },
   {
-    id: '3',
+    id: uuidv7(),
+    type: 'date',
+    label: 'Date of birth',
+    icon: 'calendar_month',
+  },
+  {
+    id: uuidv7(),
     type: 'select',
     label: 'Gender',
     icon: 'arrow_drop_down',
     options: ['Male', 'Female', 'Other'],
   },
   {
-    id: '4',
+    id: uuidv7(),
     type: 'toggle',
     label: 'Unable to work due to injury',
     icon: 'toggle_on',
   },
   {
-    id: '5',
+    id: uuidv7(),
     type: 'checkbox',
     label: 'Indicate your injuries',
     icon: 'checklist',
   },
 ];
-
