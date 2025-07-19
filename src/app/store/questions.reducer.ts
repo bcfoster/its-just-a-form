@@ -11,8 +11,6 @@ import {
 } from 'ngrx-forms';
 import { immerOn } from 'ngrx-immer/store';
 import { moveItemInArray } from '@angular/cdk/drag-drop';
-import { FormBuilder } from '@angular/forms';
-import { v7 as uuidv7 } from 'uuid';
 
 export const FORM_ID = 'question-form';
 export const BUILDER_FORM_ID = 'builder-form';
@@ -25,7 +23,7 @@ export interface Form {
   someDate?: string | null;
 }
 
-export interface BuilderFormControl {
+export interface FormInput {
   label: string;
   type: InputTypes;
   options: string[];
@@ -33,66 +31,64 @@ export interface BuilderFormControl {
 }
 
 export interface BuilderForm {
-  name: string;
-  formControls: BuilderFormControl[];
+  formControls: FormInput[];
 }
 
 export interface State {
+  name: string;
   questions: Question[];
   form: FormArrayState<Form>;
-  builder: FormGroupState<BuilderForm>;
+  builder: FormArrayState<FormInput>;
 }
 
 export const initialState: State = {
+  name: 'Personal information',
   questions: [],
   form: createFormArrayState(FORM_ID, []),
-  builder: createFormGroupState<BuilderForm>(BUILDER_FORM_ID, {
-    name: 'Personal information',
-    formControls: [
-      {
-        type: 'text',
-        label: 'Preferred first name',
-        options: [],
-        validators: [],
-      },
-      {
-        type: 'textarea',
-        label: 'Additional details',
-        options: [],
-        validators: [],
-      },
-      {
-        type: 'date',
-        label: 'Date of birth',
-        options: [],
-        validators: [],
-      },
-      {
-        type: 'select',
-        label: 'Gender',
-        options: [],
-        validators: [],
-      },
-      {
-        type: 'toggle',
-        label: 'Unable to work due to injury',
-        options: [],
-        validators: [],
-      },
-      {
-        type: 'checkbox',
-        label: 'Indicate your injuries',
-        options: [],
-        validators: [],
-      },
-      {
-        type: 'radio',
-        label: 'Favourite captain',
-        options: [],
-        validators: [],
-      },
-    ],
-  }),
+  builder: createFormArrayState(BUILDER_FORM_ID, [
+    {
+      type: 'text',
+      label: 'Preferred first name',
+      options: [],
+      validators: [],
+    },
+    {
+      type: 'textarea',
+      label: 'Additional details',
+      options: [],
+      validators: [],
+    },
+    {
+      type: 'date',
+      label: 'Date of birth',
+      options: [],
+      validators: [],
+    },
+    {
+      type: 'select',
+      label: 'Gender',
+      options: [],
+      validators: [],
+    },
+    {
+      type: 'toggle',
+      label: 'Unable to work due to injury',
+      options: [],
+      validators: [],
+    },
+    {
+      type: 'checkbox',
+      label: 'Indicate your injuries',
+      options: [],
+      validators: [],
+    },
+    {
+      type: 'radio',
+      label: 'Favourite captain',
+      options: [],
+      validators: [],
+    },
+  ]),
 };
 
 export const reducer = createReducer(

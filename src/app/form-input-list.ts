@@ -1,5 +1,5 @@
 import { Component, inject, input } from '@angular/core';
-import { FormGroupState, NgrxFormsModule } from 'ngrx-forms';
+import { FormArrayState, NgrxFormsModule } from 'ngrx-forms';
 import { NzFormModule } from 'ng-zorro-antd/form';
 import { CdkDrag, CdkDragDrop, CdkDropList } from '@angular/cdk/drag-drop';
 import { NzTypographyModule } from 'ng-zorro-antd/typography';
@@ -10,7 +10,7 @@ import { NzButtonModule } from 'ng-zorro-antd/button';
 import { NzSelectModule } from 'ng-zorro-antd/select';
 import { LowerCasePipe } from '@angular/common';
 import { Observable } from 'rxjs';
-import { BuilderForm } from './store/questions.reducer';
+import { FormInput } from './store/questions.reducer';
 import * as questionsSelectors from './store/questions.selectors';
 import { PushPipe } from '@ngrx/component';
 
@@ -51,9 +51,7 @@ import { PushPipe } from '@ngrx/component';
             <nz-select
               nzPlaceHolder="Select an option"
               [nzDropdownMatchSelectWidth]="false"
-              [ngrxFormControlState]="
-                form.controls.formControls.controls[index].controls.type
-              "
+              [ngrxFormControlState]="form.controls[index].controls.type"
             >
               @for (
                 option of [
@@ -126,7 +124,7 @@ import { PushPipe } from '@ngrx/component';
 export class FormInputList {
   private readonly store = inject(Store);
 
-  protected readonly form$: Observable<FormGroupState<BuilderForm>>;
+  protected readonly form$: Observable<FormArrayState<FormInput>>;
 
   questions = input.required<Question[]>();
 
