@@ -162,6 +162,9 @@ import { Form } from './store/questions.reducer';
         0 5px 5px -3px rgba(0, 0, 0, 0.2),
         0 8px 10px 1px rgba(0, 0, 0, 0.14),
         0 3px 14px 2px rgba(0, 0, 0, 0.12);
+      padding-top: 10px;
+      padding-bottom: 10px;
+      padding-left: 15px;
     }
 
     .cdk-drag-placeholder {
@@ -169,7 +172,7 @@ import { Form } from './store/questions.reducer';
     }
 
     .cdk-drag-animating {
-      /*transition: transform 150ms cubic-bezier(0, 0, 0.2, 1);*/
+      transition: transform 150ms cubic-bezier(0, 0, 0.2, 1);
     }
 
     .example-box:last-child {
@@ -178,7 +181,7 @@ import { Form } from './store/questions.reducer';
 
     .example-list.cdk-drop-list-dragging
       .example-box:not(.cdk-drag-placeholder) {
-      /*transition: transform 250ms cubic-bezier(0, 0, 0.2, 1);*/
+      transition: transform 250ms cubic-bezier(0, 0, 0.2, 1);
     }
 
     .example-box:hover div#edit {

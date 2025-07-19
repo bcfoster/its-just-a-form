@@ -8,6 +8,7 @@ import {
   setValue,
 } from 'ngrx-forms';
 import { immerOn } from 'ngrx-immer/store';
+import { moveItemInArray } from '@angular/cdk/drag-drop';
 
 export const FORM_ID = 'question-form';
 
@@ -41,21 +42,12 @@ export const reducer = createReducer(
     form: setValue(state.form, mapToForms(action.questions)),
   })),
   immerOn(questionsActions.move, (state, action) => {
-    [
-      state.questions[action.previousIndex],
-      state.questions[action.currentIndex],
-    ] = [
-      state.questions[action.currentIndex],
-      state.questions[action.previousIndex],
-    ];
-
-    [
-      state.form.controls[action.previousIndex],
-      state.form.controls[action.currentIndex],
-    ] = [
-      state.form.controls[action.currentIndex],
-      state.form.controls[action.previousIndex],
-    ];
+    moveItemInArray(state.questions, action.previousIndex, action.currentIndex);
+    moveItemInArray(
+      state.form.controls,
+      action.previousIndex,
+      action.currentIndex,
+    );
   }),
 );
 
