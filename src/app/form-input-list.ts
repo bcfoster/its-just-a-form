@@ -1,5 +1,10 @@
 import { Component, inject, input } from '@angular/core';
-import { FormArrayState, NgrxFormsModule } from 'ngrx-forms';
+import {
+  AddArrayControlAction,
+  FormArrayState,
+  NgrxFormsModule,
+  RemoveArrayControlAction,
+} from 'ngrx-forms';
 import { NzFormModule } from 'ng-zorro-antd/form';
 import { CdkDrag, CdkDragDrop, CdkDropList } from '@angular/cdk/drag-drop';
 import { NzTypographyModule } from 'ng-zorro-antd/typography';
@@ -13,16 +18,23 @@ import { Observable } from 'rxjs';
 import { FormInput } from './store/questions.reducer';
 import * as questionsSelectors from './store/questions.selectors';
 import { PushPipe } from '@ngrx/component';
+import { NzDividerModule } from 'ng-zorro-antd/divider';
+import { NzInputModule } from 'ng-zorro-antd/input';
+import { NzIconModule } from 'ng-zorro-antd/icon';
+import { remove } from 'immutable';
 
 @Component({
   selector: 'app-form-input-list',
   imports: [
     CdkDrag,
     CdkDropList,
+    NzInputModule,
     NgrxFormsModule,
     NzButtonModule,
     NzFormModule,
     NzTypographyModule,
+    NzIconModule,
+    NzDividerModule,
     CdkDrag,
     NzSelectModule,
     LowerCasePipe,
@@ -40,14 +52,18 @@ import { PushPipe } from '@ngrx/component';
       >
         @for (question of questions(); track question; let index = $index) {
           <div cdkDrag class="example-box flex flex-col p-3 gap-y-2">
-            <div class="flex justify-between">
-              <div>
-                {{ question.label }}
-              </div>
-              <div id="edit" class="invisible">
-                <a href="#">edit</a>
-              </div>
-            </div>
+            <input
+              nz-input
+              [ngrxFormControlState]="form.controls[index].controls.label"
+            />
+            <!--            <div class="flex justify-between">-->
+            <!--              <div>-->
+            <!--                {{ question.label }}-->
+            <!--              </div>-->
+            <!--              <div id="edit" class="invisible">-->
+            <!--                <a href="#">edit</a>-->
+            <!--              </div>-->
+            <!--            </div>-->
             <nz-select
               nzPlaceHolder="Select an option"
               [nzDropdownMatchSelectWidth]="false"
@@ -71,6 +87,41 @@ import { PushPipe } from '@ngrx/component';
                 ></nz-option>
               }
             </nz-select>
+
+            @if (
+              form.controls[index].value.type == 'checkbox' ||
+              form.controls[index].value.type == 'radio'
+            ) {
+              @let options = form.controls[index].controls.options;
+
+              <div class="flex flex-col gap-y-2">
+                @if (options.value.length > 0) {
+                  <div>Options</div>
+                }
+                @for (
+                  control of options.controls;
+                  track control.id;
+                  let index = $index
+                ) {
+                  <div class="flex gap-x-2">
+                    <input nz-input [ngrxFormControlState]="control" />
+                    <nz-icon
+                      nzType="delete"
+                      nzTheme="outline"
+                      (click)="removeOption(options.id, index)"
+                    />
+                  </div>
+                }
+                <button
+                  nz-button
+                  nzType="link"
+                  nzBlock
+                  (click)="addOption(options.id)"
+                >
+                  Add option
+                </button>
+              </div>
+            }
           </div>
         }
       </div>
@@ -85,7 +136,7 @@ import { PushPipe } from '@ngrx/component';
       border-bottom: solid 1px #ccc;
       color: rgba(0, 0, 0, 0.87);
       box-sizing: border-box;
-      cursor: move;
+      /*cursor: move;*/
     }
 
     .cdk-drag-preview {
@@ -140,4 +191,14 @@ export class FormInputList {
       }),
     );
   }
+
+  addOption(id: string) {
+    this.store.dispatch(new AddArrayControlAction(id, ''));
+  }
+
+  removeOption(id: string, index: number) {
+    this.store.dispatch(new RemoveArrayControlAction(id, index));
+  }
+
+  protected readonly remove = remove;
 }
