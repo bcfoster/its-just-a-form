@@ -6,18 +6,17 @@ import { NzCheckboxModule } from 'ng-zorro-antd/checkbox';
   selector: 'app-checkbox-input',
   imports: [NgrxFormsModule, NzCheckboxModule],
   template: `
-    @if (control() !== undefined) {
+    @let c = control();
+
+    @if (c !== undefined) {
       <div>
         @for (
           option of options();
-          track option;
-          let i = $index;
+          track index;
+          let index = $index;
           let last = $last
         ) {
-          <label
-            nz-checkbox
-            [ngrxFormControlState]="$any(control()!.controls[i])"
-          >
+          <label nz-checkbox [ngrxFormControlState]="c.controls[index]">
             {{ option }}
           </label>
           @if (!last) {

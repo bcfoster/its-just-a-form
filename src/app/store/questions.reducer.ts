@@ -2,22 +2,25 @@ import { createReducer } from '@ngrx/store';
 import { InputTypes } from './index';
 import {
   createFormArrayState,
+  createFormControlState,
   FormArrayState,
+  FormControlState,
   onNgrxForms,
   setUserDefinedProperty,
   updateArray,
   updateGroup,
   validate,
+  wrapReducerWithFormStateUpdate,
 } from 'ngrx-forms';
 import { required } from 'ngrx-forms/validation';
 
-export const FORM_ID = 'question-form';
-export const BUILDER_FORM_ID = 'builder-form';
+export const FORM_ID = 'form';
 
 export interface Form {
   // TODO: try using 'or null' optional property
-  label?: string;
-  type?: string;
+  label: string;
+  type: string;
+  options: string[];
   someText?: string;
   someBoolean?: boolean;
   someBooleans?: boolean[];
@@ -37,30 +40,30 @@ export interface FormInput {
 }
 
 export interface State {
-  name: string;
+  name: FormControlState<string>;
   builder: FormArrayState<FormInput>;
 }
 
 export const initialFormValue: FormInput = {
   type: 'text',
   label: '',
-  options: [],
+  options: [''],
   validators: {
     required: false,
   },
 };
 
 export const initialState: State = {
-  name: 'Personal information',
-  builder: createFormArrayState(BUILDER_FORM_ID, []),
+  name: createFormControlState('name', 'New form'),
+  builder: createFormArrayState(FORM_ID, [initialFormValue]),
 };
 
 // TODO: updateArray with updateGroup<Form> that uses the same map/switch in mapToForms
 //       could updateGroup<Form> be used to chain multiple updates together that conditionally apply
 //       the user defined properties? if not, the user defined props must be set in an effect, right?
-export const reducer = createReducer(initialState, onNgrxForms());
+export const rawReducer = createReducer(initialState, onNgrxForms());
 
-export const validateForm = updateArray<Form>(
+export const validateDynamicForm = updateArray<Form>(
   (group) => setUserDefinedProperty(group, 'required', true),
   (group) =>
     updateGroup<Form>(
@@ -74,4 +77,10 @@ export const validateForm = updateArray<Form>(
           }
         : {},
     ),
+);
+
+export const reducer = wrapReducerWithFormStateUpdate(
+  rawReducer,
+  (state) => state.name,
+  validate(required),
 );

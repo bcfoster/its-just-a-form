@@ -1,3 +1,3 @@
-import { UserOutline, TeamOutline } from '@ant-design/icons-angular/icons';
+import { SaveOutline } from '@ant-design/icons-angular/icons';
 
-export const icons = [UserOutline, TeamOutline];
+export const icons = [SaveOutline];

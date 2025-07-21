@@ -1,7 +1,8 @@
-import { Component, inject, input } from '@angular/core';
+import { Component, ElementRef, inject, input, ViewChild } from '@angular/core';
 import {
   AddArrayControlAction,
   FormArrayState,
+  FormControlState,
   NgrxFormsModule,
   RemoveArrayControlAction,
 } from 'ngrx-forms';
@@ -44,8 +45,36 @@ import { NzEmptyModule } from 'ng-zorro-antd/empty';
   ],
   template: `
     @let form = form$ | ngrxPush;
+    @let name = name$ | ngrxPush;
 
-    <h5 nz-typography>Personal information</h5>
+    <h5 nz-typography>
+      @if (name) {
+        @if (editing) {
+          <div class="flex gap-x-2 items-center">
+            <input
+              #formName
+              nz-input
+              placeholder="Form name"
+              [ngrxFormControlState]="name"
+            />
+            <a
+              href="javascript:void(0);"
+              [disabled]="name.isInvalid"
+              nz-button
+              nzType="link"
+              (click)="editing = false"
+            >
+              <nz-icon nzType="save" nzTheme="outline" />
+            </a>
+          </div>
+        } @else {
+          {{ name.value }}
+          <a href="javascript:void(0);" (click)="editing = true">
+            <nz-icon nzType="edit" nzTheme="outline" />
+          </a>
+        }
+      }
+    </h5>
 
     @if (form?.value?.length === 0) {
       <nz-empty nzNotFoundImage="simple" />
@@ -53,21 +82,27 @@ import { NzEmptyModule } from 'ng-zorro-antd/empty';
 
     @if (form && form.value.length > 0) {
       <div cdkDropList (cdkDropListDropped)="drop($event)" class="example-list">
-        @for (control of form.controls; track control.id; let index = $index) {
-          <div cdkDrag class="example-box flex flex-col p-2 gap-y-2">
-            <div class="flex gap-x-2">
+        @for (
+          control of form.controls;
+          track control.id;
+          let count = $count;
+          let index = $index
+        ) {
+          <div cdkDrag class="example-box flex flex-col p-3 gap-y-2">
+            <div class="flex gap-x-2 items-center">
               <input
                 nz-input
+                placeholder="Label text"
                 [ngrxFormControlState]="form.controls[index].controls.label"
               />
-              <div id="edit">
+              @if (count > 1) {
                 <a
                   href="javascript:void(0)"
                   (click)="removeQuestion(form.id, index)"
                 >
-                  remove
+                  <nz-icon nzType="delete" nzTheme="outline" />
                 </a>
-              </div>
+              }
             </div>
             <nz-select
               nzPlaceHolder="Select an option"
@@ -106,15 +141,19 @@ import { NzEmptyModule } from 'ng-zorro-antd/empty';
                 @for (
                   control of options.controls;
                   track control.id;
+                  let count = $count;
                   let index = $index
                 ) {
-                  <div class="flex gap-x-2">
+                  <div class="flex items-center gap-x-2">
                     <input nz-input [ngrxFormControlState]="control" />
-                    <nz-icon
-                      nzType="delete"
-                      nzTheme="outline"
-                      (click)="removeOption(options.id, index)"
-                    />
+                    @if (count > 1) {
+                      <a
+                        href="javascript:void(0);"
+                        (click)="removeOption(options.id, index)"
+                      >
+                        <nz-icon nzType="delete" nzTheme="outline" />
+                      </a>
+                    }
                   </div>
                 }
                 <button
@@ -146,6 +185,10 @@ import { NzEmptyModule } from 'ng-zorro-antd/empty';
     }
   `,
   styles: `
+    [nz-button] {
+      line-height: normal;
+    }
+
     .example-list {
       border: solid 1px #ccc;
     }
@@ -163,9 +206,7 @@ import { NzEmptyModule } from 'ng-zorro-antd/empty';
         0 5px 5px -3px rgba(0, 0, 0, 0.2),
         0 8px 10px 1px rgba(0, 0, 0, 0.14),
         0 3px 14px 2px rgba(0, 0, 0, 0.12);
-      padding-top: 10px;
-      padding-bottom: 10px;
-      padding-left: 15px;
+      padding: 10px 15px;
     }
 
     .cdk-drag-placeholder {
@@ -194,10 +235,15 @@ export class FormInputList {
   private readonly store = inject(Store);
 
   protected readonly form$: Observable<FormArrayState<FormInput>>;
+  protected readonly name$: Observable<FormControlState<string>>;
+  protected editing = false;
 
   constructor() {
     this.form$ = this.store.select(questionsSelectors.selectBuilder);
+    this.name$ = this.store.select(questionsSelectors.selectName);
   }
+
+  @ViewChild('formName') formNameInput: ElementRef | undefined;
 
   drop(event: CdkDragDrop<string[]>) {
     this.store.dispatch(
