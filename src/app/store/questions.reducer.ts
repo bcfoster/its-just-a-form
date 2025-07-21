@@ -1,10 +1,8 @@
 import { createReducer } from '@ngrx/store';
 import { InputTypes } from './index';
 import {
-  createFormArrayState,
-  createFormControlState,
-  FormArrayState,
-  FormControlState,
+  createFormGroupState,
+  FormGroupState,
   onNgrxForms,
   setUserDefinedProperty,
   updateArray,
@@ -14,37 +12,20 @@ import {
 } from 'ngrx-forms';
 import { required } from 'ngrx-forms/validation';
 
-export const FORM_ID = 'form';
-
-export interface Form {
-  // TODO: try using 'or null' optional property
-  label: string;
-  type: string;
-  options: string[];
-  someText?: string;
-  someBoolean?: boolean;
-  someBooleans?: boolean[];
-  someDate?: string | null;
-  required?: boolean;
-}
-
+// TODO: don't be a bozo - export form names as constants because you just know you're going to rename one of them
+//       while "refactoring" and then the forms are going to break and you won't know why you bozo
 export interface Validators {
   required: boolean;
 }
 
-export interface FormInput {
-  label: string;
+export interface BuilderForm {
   type: InputTypes;
+  label: string;
   options: string[];
   validators: Validators;
 }
 
-export interface State {
-  name: FormControlState<string>;
-  builder: FormArrayState<FormInput>;
-}
-
-export const initialFormValue: FormInput = {
+export const initialBuilder: BuilderForm = {
   type: 'text',
   label: '',
   options: [''],
@@ -53,34 +34,67 @@ export const initialFormValue: FormInput = {
   },
 };
 
-export const initialState: State = {
-  name: createFormControlState('name', 'New form'),
-  builder: createFormArrayState(FORM_ID, [initialFormValue]),
+export interface PreviewForm {
+  // TODO: try using 'or null' optional property
+  type: string;
+  label: string;
+  options: string[];
+  someText?: string;
+  someBoolean?: boolean;
+  someBooleans?: boolean[];
+  someDate?: string | null;
+  required?: boolean;
+}
+
+export const initialPreview: PreviewForm = {
+  type: 'text',
+  label: '',
+  options: [''],
 };
 
-// TODO: updateArray with updateGroup<Form> that uses the same map/switch in mapToForms
-//       could updateGroup<Form> be used to chain multiple updates together that conditionally apply
-//       the user defined properties? if not, the user defined props must be set in an effect, right?
-export const rawReducer = createReducer(initialState, onNgrxForms());
+export interface Forms {
+  name: string;
+  builder: BuilderForm[];
+  preview: PreviewForm[];
+}
 
-export const validateDynamicForm = updateArray<Form>(
-  (group) => setUserDefinedProperty(group, 'required', true),
-  (group) =>
-    updateGroup<Form>(
-      group,
-      group.userDefinedProperties['required']
-        ? {
-            someBoolean: (c) => (c !== undefined ? validate(c, required) : c),
-            someBooleans: (c) => (c !== undefined ? validate(c, required) : c),
-            someDate: (c) => (c !== undefined ? validate(c, required) : c),
-            someText: (c) => (c !== undefined ? validate(c, required) : c),
-          }
-        : {},
-    ),
-);
+export interface State {
+  forms: FormGroupState<Forms>;
+}
+
+export const initialState: State = {
+  forms: createFormGroupState('forms', {
+    name: 'New form',
+    builder: [initialBuilder],
+    preview: [initialPreview],
+  }),
+};
+
+const rawReducer = createReducer(initialState, onNgrxForms());
+
+export const validateForms = updateGroup<Forms>({
+  name: validate(required),
+  builder: updateArray(updateGroup({})),
+  preview: updateArray<PreviewForm>(
+    (group) => setUserDefinedProperty(group, 'required', true),
+    (group) =>
+      updateGroup<PreviewForm>(
+        group,
+        group.userDefinedProperties['required']
+          ? {
+              someBoolean: (c) => (c !== undefined ? validate(c, required) : c),
+              someBooleans: (c) =>
+                c !== undefined ? validate(c, required) : c,
+              someDate: (c) => (c !== undefined ? validate(c, required) : c),
+              someText: (c) => (c !== undefined ? validate(c, required) : c),
+            }
+          : {},
+      ),
+  ),
+});
 
 export const reducer = wrapReducerWithFormStateUpdate(
   rawReducer,
-  (state) => state.name,
-  validate(required),
+  (state) => state.forms,
+  validateForms,
 );

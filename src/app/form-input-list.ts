@@ -14,8 +14,8 @@ import { Store } from '@ngrx/store';
 import { NzButtonModule } from 'ng-zorro-antd/button';
 import { NzSelectModule } from 'ng-zorro-antd/select';
 import { LowerCasePipe } from '@angular/common';
-import { Observable } from 'rxjs';
-import { FormInput } from './store/questions.reducer';
+import { map, Observable } from 'rxjs';
+import { BuilderForm } from './store/questions.reducer';
 import * as questionsSelectors from './store/questions.selectors';
 import { PushPipe } from '@ngrx/component';
 import { NzDividerModule } from 'ng-zorro-antd/divider';
@@ -234,13 +234,17 @@ import { NzEmptyModule } from 'ng-zorro-antd/empty';
 export class FormInputList {
   private readonly store = inject(Store);
 
-  protected readonly form$: Observable<FormArrayState<FormInput>>;
+  protected readonly form$: Observable<FormArrayState<BuilderForm>>;
   protected readonly name$: Observable<FormControlState<string>>;
   protected editing = false;
 
   constructor() {
-    this.form$ = this.store.select(questionsSelectors.selectBuilder);
-    this.name$ = this.store.select(questionsSelectors.selectName);
+    this.form$ = this.store
+      .select(questionsSelectors.selectForms)
+      .pipe(map((forms) => forms.controls.builder));
+    this.name$ = this.store
+      .select(questionsSelectors.selectForms)
+      .pipe(map((forms) => forms.controls.name));
   }
 
   @ViewChild('formName') formNameInput: ElementRef | undefined;

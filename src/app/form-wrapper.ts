@@ -1,6 +1,6 @@
 import { Component, inject } from '@angular/core';
 import { FormArrayState, NgrxFormsModule } from 'ngrx-forms';
-import { Form } from './store/questions.reducer';
+import { PreviewForm } from './store/questions.reducer';
 import { CheckboxInput } from './inputs/checkbox-input';
 import {
   DateInput,
@@ -12,7 +12,7 @@ import {
 import { LetDirective, PushPipe } from '@ngrx/component';
 import { NzFormModule } from 'ng-zorro-antd/form';
 import { RadioInput } from './inputs/radio-input';
-import { Observable } from 'rxjs';
+import { map, Observable } from 'rxjs';
 import * as questionsSelectors from './store/questions.selectors';
 import { Store } from '@ngrx/store';
 import { NzTypographyComponent } from 'ng-zorro-antd/typography';
@@ -109,10 +109,12 @@ export class FormWrapper {
   private readonly store = inject(Store);
 
   protected readonly name$: Observable<string>;
-  protected readonly form$: Observable<FormArrayState<Form>>;
+  protected readonly form$: Observable<FormArrayState<PreviewForm>>;
 
   constructor() {
     this.name$ = this.store.select(questionsSelectors.selectFormName);
-    this.form$ = this.store.select(questionsSelectors.selectGeneratedForm);
+    this.form$ = this.store
+      .select(questionsSelectors.selectForms)
+      .pipe(map((forms) => forms.controls.preview));
   }
 }

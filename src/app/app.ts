@@ -5,7 +5,7 @@ import { Store } from '@ngrx/store';
 import { NzListModule } from 'ng-zorro-antd/list';
 import { AddArrayControlAction, NgrxFormsModule } from 'ngrx-forms';
 import { NzFormModule } from 'ng-zorro-antd/form';
-import { FORM_ID, initialFormValue } from './store/questions.reducer';
+import { initialBuilder } from './store/questions.reducer';
 import { NzTypographyModule } from 'ng-zorro-antd/typography';
 import { FormWrapper } from './form-wrapper';
 import { FormInputList } from './form-input-list';
@@ -49,6 +49,8 @@ export class App {
   private readonly store = inject(Store);
 
   addQuestion() {
-    this.store.dispatch(new AddArrayControlAction(FORM_ID, initialFormValue));
+    this.store.dispatch(
+      new AddArrayControlAction('forms.builder', initialBuilder),
+    );
   }
 }
