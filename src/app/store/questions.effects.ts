@@ -10,7 +10,11 @@ import {
   RemoveArrayControlAction,
   SetValueAction,
 } from 'ngrx-forms';
-import { initialPreview } from './questions.reducer';
+import {
+  BUILDER_FORM_ID,
+  initialPreview,
+  PREVIEW_FORM_ID,
+} from './questions.reducer';
 
 @Injectable()
 export class QuestionsEffects {
@@ -25,7 +29,7 @@ export class QuestionsEffects {
       map(([action, form]) => {
         const inputs = [...form.controls.builder.value];
         moveItemInArray(inputs, action.previousIndex, action.currentIndex);
-        return new SetValueAction(form.id, inputs);
+        return new SetValueAction(BUILDER_FORM_ID, inputs);
       }),
     ),
   );
@@ -37,7 +41,7 @@ export class QuestionsEffects {
         AddArrayControlAction.TYPE,
         RemoveArrayControlAction.TYPE,
       ),
-      filter((action) => action.controlId.startsWith('forms.builder')),
+      filter((action) => action.controlId.startsWith(BUILDER_FORM_ID)),
       withLatestFrom(this.store.select(questionSelectors.selectBuilderForm)),
       map(([_, form]) =>
         form.value.map((input) => {
@@ -77,7 +81,7 @@ export class QuestionsEffects {
           }
         }),
       ),
-      map((inputs) => new SetValueAction('forms.preview', inputs)),
+      map((inputs) => new SetValueAction(PREVIEW_FORM_ID, inputs)),
     ),
   );
 }

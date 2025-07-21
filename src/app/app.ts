@@ -10,6 +10,7 @@ import {
 } from 'ngrx-forms';
 import { NzFormModule } from 'ng-zorro-antd/form';
 import {
+  BUILDER_FORM_ID,
   BuilderForm,
   initialBuilder,
   PreviewForm,
@@ -76,7 +77,7 @@ export class App {
 
   addQuestion() {
     this.store.dispatch(
-      new AddArrayControlAction('forms.builder', initialBuilder),
+      new AddArrayControlAction(BUILDER_FORM_ID, initialBuilder),
     );
   }
 }

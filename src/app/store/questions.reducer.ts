@@ -11,6 +11,9 @@ import {
 } from 'ngrx-forms';
 import { required } from 'ngrx-forms/validation';
 
+export const BUILDER_FORM_ID = 'forms.builder';
+export const PREVIEW_FORM_ID = 'forms.preview';
+
 export type InputTypes =
   | 'checkbox'
   | 'date'
