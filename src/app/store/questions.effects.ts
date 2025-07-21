@@ -38,11 +38,9 @@ export class QuestionsEffects {
         RemoveArrayControlAction.TYPE,
       ),
       filter((action) => action.controlId.startsWith('forms.builder')),
-      withLatestFrom(
-        this.store.select(questionSelectors.selectBuilderFormValue),
-      ),
+      withLatestFrom(this.store.select(questionSelectors.selectBuilderForm)),
       map(([_, form]) =>
-        form.map((input) => {
+        form.value.map((input) => {
           let preview = {
             ...initialPreview,
             type: input.type,

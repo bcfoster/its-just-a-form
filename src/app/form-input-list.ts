@@ -1,6 +1,5 @@
-import { Component, inject } from '@angular/core';
+import { Component, inject, input } from '@angular/core';
 import {
-  AddArrayControlAction,
   FormArrayState,
   FormControlState,
   NgrxFormsModule,
@@ -13,7 +12,6 @@ import { questionsActions } from './store/questions.actions';
 import { Store } from '@ngrx/store';
 import { NzButtonModule } from 'ng-zorro-antd/button';
 import { NzSelectModule } from 'ng-zorro-antd/select';
-import { LowerCasePipe } from '@angular/common';
 import { map, Observable } from 'rxjs';
 import { BuilderForm } from './store/questions.reducer';
 import * as questionsSelectors from './store/questions.selectors';
@@ -21,7 +19,6 @@ import { PushPipe } from '@ngrx/component';
 import { NzDividerModule } from 'ng-zorro-antd/divider';
 import { NzInputModule } from 'ng-zorro-antd/input';
 import { NzIconModule } from 'ng-zorro-antd/icon';
-import { NzCheckboxComponent } from 'ng-zorro-antd/checkbox';
 import { NzEmptyModule } from 'ng-zorro-antd/empty';
 import { InputListItem } from './input-list-item';
 
@@ -39,9 +36,7 @@ import { InputListItem } from './input-list-item';
     NzDividerModule,
     CdkDrag,
     NzSelectModule,
-    LowerCasePipe,
     PushPipe,
-    NzCheckboxComponent,
     NzEmptyModule,
     InputListItem,
   ],
@@ -83,12 +78,7 @@ import { InputListItem } from './input-list-item';
 
     @if (form !== undefined && form.value.length > 0) {
       <div cdkDropList (cdkDropListDropped)="drop($event)" class="example-list">
-        @for (
-          control of form.controls;
-          track control.id;
-          let count = $count;
-          let index = $index
-        ) {
+        @for (control of form.controls; track control.id; let index = $index) {
           <div cdkDrag class="example-box flex flex-col p-3 gap-y-2">
             <app-input-list-item
               [form]="control"
@@ -152,6 +142,8 @@ export class FormInputList {
   protected readonly form$: Observable<FormArrayState<BuilderForm>>;
   protected readonly name$: Observable<FormControlState<string>>;
   protected editing = false;
+
+  controls = input.required<FormArrayState<BuilderForm>>();
 
   constructor() {
     this.form$ = this.store

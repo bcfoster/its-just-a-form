@@ -1,4 +1,4 @@
-import { Component, inject } from '@angular/core';
+import { Component, inject, input } from '@angular/core';
 import { FormArrayState, NgrxFormsModule } from 'ngrx-forms';
 import { PreviewForm } from './store/questions.reducer';
 import { CheckboxInput } from './inputs/checkbox-input';
@@ -9,10 +9,10 @@ import {
   TextInput,
   ToggleInput,
 } from './inputs';
-import { LetDirective, PushPipe } from '@ngrx/component';
+import { PushPipe } from '@ngrx/component';
 import { NzFormModule } from 'ng-zorro-antd/form';
 import { RadioInput } from './inputs/radio-input';
-import { map, Observable } from 'rxjs';
+import { Observable } from 'rxjs';
 import * as questionsSelectors from './store/questions.selectors';
 import { Store } from '@ngrx/store';
 import { NzTypographyComponent } from 'ng-zorro-antd/typography';
@@ -24,7 +24,6 @@ import { FormsModule } from '@angular/forms';
   imports: [
     NzButtonModule,
     NgrxFormsModule,
-    LetDirective,
     DateInput,
     SelectInput,
     ToggleInput,
@@ -39,15 +38,9 @@ import { FormsModule } from '@angular/forms';
   ],
   template: `
     <h3 nz-typography>{{ name$ | ngrxPush }}</h3>
-    <form
-      *ngrxLet="form$ as form"
-      nz-form
-      [ngrxFormState]="form"
-      autocomplete="off"
-      (ngSubmit)="submit(form.value)"
-    >
+    <form nz-form autocomplete="off" (ngSubmit)="submit(controls().value)">
       <div class="flex flex-col gap-y-3">
-        @for (control of form.controls; track control.id; let index = $index) {
+        @for (control of controls().controls; track control.id) {
           <div class="flex flex-col">
             <nz-form-label
               [nzRequired]="control.value.required"
@@ -59,41 +52,33 @@ import { FormsModule } from '@angular/forms';
             @switch (control.value.type) {
               @case ('checkbox') {
                 <app-checkbox-input
-                  [control]="form.controls[index].controls.someBooleans"
+                  [control]="control.controls.someBooleans"
                   [options]="control.value.options"
                 />
               }
               @case ('date') {
-                <app-date-input
-                  [control]="form.controls[index].controls.someDate"
-                />
+                <app-date-input [control]="control.controls.someDate" />
               }
               @case ('radio') {
                 <app-radio-input
-                  [control]="form.controls[index].controls.someText"
+                  [control]="control.controls.someText"
                   [options]="control.value.options"
                 />
               }
               @case ('select') {
                 <app-select-input
-                  [control]="form.controls[index].controls.someText"
+                  [control]="control.controls.someText"
                   [options]="control.value.options"
                 />
               }
               @case ('text') {
-                <app-text-input
-                  [control]="form.controls[index].controls.someText"
-                />
+                <app-text-input [control]="control.controls.someText" />
               }
               @case ('textarea') {
-                <app-textarea-input
-                  [control]="form.controls[index].controls.someText"
-                />
+                <app-textarea-input [control]="control.controls.someText" />
               }
               @case ('toggle') {
-                <app-toggle-input
-                  [control]="form.controls[index].controls.someBoolean"
-                />
+                <app-toggle-input [control]="control.controls.someBoolean" />
               }
             }
           </div>
@@ -102,7 +87,7 @@ import { FormsModule } from '@angular/forms';
           <button
             nz-button
             nzType="primary"
-            [disabled]="form.value.length === 0 || form.isInvalid"
+            [disabled]="controls().value.length === 0 || controls().isInvalid"
           >
             Submit
           </button>
@@ -115,13 +100,11 @@ export class FormPreview {
   private readonly store = inject(Store);
 
   protected readonly name$: Observable<string>;
-  protected readonly form$: Observable<FormArrayState<PreviewForm>>;
+
+  controls = input.required<FormArrayState<PreviewForm>>();
 
   constructor() {
     this.name$ = this.store.select(questionsSelectors.selectFormName);
-    this.form$ = this.store
-      .select(questionsSelectors.selectForms)
-      .pipe(map((forms) => forms.controls.preview));
   }
 
   submit(form: PreviewForm[]) {

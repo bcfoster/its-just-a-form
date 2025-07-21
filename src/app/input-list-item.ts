@@ -143,9 +143,10 @@ import { NzButtonModule } from 'ng-zorro-antd/button';
 export class InputListItem {
   private readonly store = inject(Store);
 
-  protected form = input.required<FormGroupState<BuilderForm>>();
   protected isEditing = false;
   protected removed = output();
+
+  form = input.required<FormGroupState<BuilderForm>>();
 
   addOption(id: string) {
     this.store.dispatch(new AddArrayControlAction(id, ''));
