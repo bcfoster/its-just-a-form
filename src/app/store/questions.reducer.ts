@@ -3,14 +3,18 @@ import { InputTypes, Question } from './index';
 import { questionsActions } from './questions.actions';
 import {
   createFormArrayState,
-  createFormGroupState,
   FormArrayState,
-  FormGroupState,
   onNgrxForms,
+  setUserDefinedProperty,
   setValue,
+  updateArray,
+  updateGroup,
+  validate,
+  wrapReducerWithFormStateUpdate,
 } from 'ngrx-forms';
 import { immerOn } from 'ngrx-immer/store';
 import { moveItemInArray } from '@angular/cdk/drag-drop';
+import { required } from 'ngrx-forms/validation';
 
 export const FORM_ID = 'question-form';
 export const BUILDER_FORM_ID = 'builder-form';
@@ -23,11 +27,15 @@ export interface Form {
   someDate?: string | null;
 }
 
+export interface Validators {
+  required?: boolean;
+}
+
 export interface FormInput {
   label: string;
   type: InputTypes;
   options: string[];
-  validators: string[];
+  validators: Validators;
 }
 
 export interface BuilderForm {
@@ -50,48 +58,48 @@ export const initialState: State = {
       type: 'text',
       label: 'Preferred first name',
       options: [],
-      validators: [],
+      validators: {},
     },
     {
       type: 'textarea',
       label: 'Additional details',
       options: [],
-      validators: [],
+      validators: {},
     },
     {
       type: 'date',
       label: 'Date of birth',
       options: [],
-      validators: [],
+      validators: {},
     },
     {
       type: 'select',
       label: 'Gender',
       options: [],
-      validators: [],
+      validators: {},
     },
     {
       type: 'toggle',
       label: 'Unable to work due to injury',
       options: [],
-      validators: [],
+      validators: {},
     },
     {
       type: 'checkbox',
       label: 'Indicate your injuries',
       options: [],
-      validators: [],
+      validators: {},
     },
     {
       type: 'radio',
       label: 'Favourite captain',
       options: [],
-      validators: [],
+      validators: {},
     },
   ]),
 };
 
-export const reducer = createReducer(
+const rawReducer = createReducer(
   initialState,
   onNgrxForms(),
   on(questionsActions.initialize, (state, action) => ({
@@ -110,6 +118,28 @@ export const reducer = createReducer(
       action.currentIndex,
     );
   }),
+);
+
+const validateForm = updateArray<Form>(
+  (group) => setUserDefinedProperty(group, 'required', true),
+  (group) =>
+    updateGroup<Form>(
+      group,
+      group.userDefinedProperties['required']
+        ? {
+            someBoolean: (c) => (c !== undefined ? validate(c, required) : c),
+            someBooleans: (c) => (c !== undefined ? validate(c, required) : c),
+            someDate: (c) => (c !== undefined ? validate(c, required) : c),
+            someText: (c) => (c !== undefined ? validate(c, required) : c),
+          }
+        : {},
+    ),
+);
+
+export const reducer = wrapReducerWithFormStateUpdate(
+  rawReducer,
+  (state) => state.form,
+  validateForm,
 );
 
 const mapToForms = (questions: Question[]): Form[] =>

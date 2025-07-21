@@ -8,9 +8,28 @@ import { NzInputDirective } from 'ng-zorro-antd/input';
   template: `
     @if (control() !== undefined) {
       <input nz-input [ngrxFormControlState]="$any(control())" />
+      <span class="error">
+        @if (control()?.errors && control()?.isTouched) {
+          @if (control()?.errors?.required) {
+            Field is required
+          }
+        }
+      </span>
     }
   `,
-  styles: ``,
+  styles: `
+    input:focus {
+      box-shadow: 0 0 0 2px lightpink;
+    }
+
+    .ngrx-forms-invalid.ngrx-forms-touched {
+      border-color: red;
+    }
+
+    .error {
+      color: red;
+    }
+  `,
 })
 export class TextInput {
   control = input.required<FormControlState<string | undefined> | undefined>();

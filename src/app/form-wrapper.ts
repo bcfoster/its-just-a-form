@@ -38,7 +38,12 @@ import { RadioInput } from './inputs/radio-input';
       <div class="flex flex-col gap-y-3">
         @for (question of questions(); track question; let index = $index) {
           <div class="flex flex-col">
-            <nz-form-label nzRequired nzLabelAlign="left">
+            <nz-form-label
+              [nzRequired]="
+                form.controls[index].userDefinedProperties['required']
+              "
+              nzLabelAlign="left"
+            >
               {{ question.label }}
             </nz-form-label>
             @switch (question.type) {
