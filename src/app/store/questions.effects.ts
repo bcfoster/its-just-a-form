@@ -5,11 +5,15 @@ import { Store } from '@ngrx/store';
 import { filter, map, withLatestFrom } from 'rxjs';
 import * as questionSelectors from './questions.selectors';
 import { moveItemInArray } from '@angular/cdk/drag-drop';
-import { SetValueAction } from 'ngrx-forms';
+import {
+  AddArrayControlAction,
+  RemoveArrayControlAction,
+  SetValueAction,
+} from 'ngrx-forms';
 import { initialPreview, PreviewForm } from './questions.reducer';
 
 @Injectable()
-export class QuestionEffects {
+export class QuestionsEffects {
   private readonly actions$ = inject(Actions);
   private readonly store = inject(Store);
 
@@ -28,7 +32,11 @@ export class QuestionEffects {
 
   toPreview$ = createEffect(() =>
     this.actions$.pipe(
-      ofType<SetValueAction<string | boolean | null>>('ngrx/forms/SET_VALUE'),
+      ofType(
+        SetValueAction.TYPE,
+        AddArrayControlAction.TYPE,
+        RemoveArrayControlAction.TYPE,
+      ),
       filter((action) => action.controlId.startsWith('forms.builder')),
       withLatestFrom(
         this.store.select(questionSelectors.selectBuilderFormValue),

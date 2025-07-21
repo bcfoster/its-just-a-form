@@ -1,4 +1,4 @@
-import { Component, ElementRef, inject, input, ViewChild } from '@angular/core';
+import { Component, inject } from '@angular/core';
 import {
   AddArrayControlAction,
   FormArrayState,
@@ -52,7 +52,6 @@ import { NzEmptyModule } from 'ng-zorro-antd/empty';
         @if (editing) {
           <div class="flex gap-x-2 items-center">
             <input
-              #formName
               nz-input
               placeholder="Form name"
               [ngrxFormControlState]="name"
@@ -76,11 +75,11 @@ import { NzEmptyModule } from 'ng-zorro-antd/empty';
       }
     </h5>
 
-    @if (form?.value?.length === 0) {
+    @if (form !== undefined && form.value.length === 0) {
       <nz-empty nzNotFoundImage="simple" />
     }
 
-    @if (form && form.value.length > 0) {
+    @if (form !== undefined && form.value.length > 0) {
       <div cdkDropList (cdkDropListDropped)="drop($event)" class="example-list">
         @for (
           control of form.controls;
@@ -130,7 +129,8 @@ import { NzEmptyModule } from 'ng-zorro-antd/empty';
 
             @if (
               form.controls[index].value.type == 'checkbox' ||
-              form.controls[index].value.type == 'radio'
+              form.controls[index].value.type == 'radio' ||
+              form.controls[index].value.type == 'select'
             ) {
               @let options = form.controls[index].controls.options;
 
@@ -246,8 +246,6 @@ export class FormInputList {
       .select(questionsSelectors.selectForms)
       .pipe(map((forms) => forms.controls.name));
   }
-
-  @ViewChild('formName') formNameInput: ElementRef | undefined;
 
   drop(event: CdkDragDrop<string[]>) {
     this.store.dispatch(

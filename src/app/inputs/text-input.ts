@@ -8,13 +8,6 @@ import { NzInputDirective } from 'ng-zorro-antd/input';
   template: `
     @if (control() !== undefined) {
       <input nz-input [ngrxFormControlState]="$any(control())" />
-      <span class="error">
-        @if (control()?.errors && control()?.isTouched) {
-          @if (control()?.errors?.required) {
-            Field is required
-          }
-        }
-      </span>
     }
   `,
 })

@@ -1,5 +1,4 @@
 import { createReducer } from '@ngrx/store';
-import { InputTypes } from './index';
 import {
   createFormGroupState,
   FormGroupState,
@@ -11,6 +10,15 @@ import {
   wrapReducerWithFormStateUpdate,
 } from 'ngrx-forms';
 import { required } from 'ngrx-forms/validation';
+
+export type InputTypes =
+  | 'checkbox'
+  | 'date'
+  | 'radio'
+  | 'select'
+  | 'text'
+  | 'textarea'
+  | 'toggle';
 
 // TODO: don't be a bozo - export form names as constants because you just know you're going to rename one of them
 //       while "refactoring" and then the forms are going to break and you won't know why you bozo
@@ -49,7 +57,8 @@ export interface PreviewForm {
 export const initialPreview: PreviewForm = {
   type: 'text',
   label: '',
-  options: [''],
+  options: [],
+  someText: '',
 };
 
 export interface Forms {

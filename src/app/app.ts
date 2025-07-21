@@ -7,11 +7,10 @@ import { AddArrayControlAction, NgrxFormsModule } from 'ngrx-forms';
 import { NzFormModule } from 'ng-zorro-antd/form';
 import { initialBuilder } from './store/questions.reducer';
 import { NzTypographyModule } from 'ng-zorro-antd/typography';
-import { FormWrapper } from './form-wrapper';
 import { FormInputList } from './form-input-list';
+import { FormPreview } from './form-preview';
 
 @Component({
-  changeDetection: ChangeDetectionStrategy.OnPush,
   selector: 'app-root',
   imports: [
     NgrxFormsModule,
@@ -20,8 +19,9 @@ import { FormInputList } from './form-input-list';
     NzListModule,
     NzSplitterModule,
     NzTypographyModule,
-    FormWrapper,
+    FormPreview,
     FormInputList,
+    FormPreview,
   ],
   template: `
     <nz-splitter>
@@ -39,7 +39,7 @@ import { FormInputList } from './form-input-list';
       </nz-splitter-panel>
       <nz-splitter-panel>
         <div class="p-3">
-          <app-form-wrapper />
+          <app-form-preview />
         </div>
       </nz-splitter-panel>
     </nz-splitter>
