@@ -21,10 +21,13 @@ export const BUILDER_FORM_ID = 'builder-form';
 
 export interface Form {
   // TODO: try using 'or null' optional property
+  label?: string;
+  type?: string;
   someText?: string;
   someBoolean?: boolean;
   someBooleans?: boolean[];
   someDate?: string | null;
+  required?: boolean;
 }
 
 export interface Validators {
@@ -38,10 +41,6 @@ export interface FormInput {
   validators: Validators;
 }
 
-export interface BuilderForm {
-  formControls: FormInput[];
-}
-
 export interface State {
   name: string;
   questions: Question[];
@@ -49,68 +48,20 @@ export interface State {
   builder: FormArrayState<FormInput>;
 }
 
+export const initialFormValue: FormInput = {
+  type: 'text',
+  label: '',
+  options: [],
+  validators: {
+    required: false,
+  },
+};
+
 export const initialState: State = {
   name: 'Personal information',
   questions: [],
   form: createFormArrayState(FORM_ID, []),
-  builder: createFormArrayState(BUILDER_FORM_ID, [
-    {
-      type: 'text',
-      label: 'Preferred first name',
-      options: [],
-      validators: {
-        required: false,
-      },
-    },
-    {
-      type: 'textarea',
-      label: 'Additional details',
-      options: [],
-      validators: {
-        required: false,
-      },
-    },
-    {
-      type: 'date',
-      label: 'Date of birth',
-      options: [],
-      validators: {
-        required: false,
-      },
-    },
-    {
-      type: 'select',
-      label: 'Gender',
-      options: [],
-      validators: {
-        required: false,
-      },
-    },
-    {
-      type: 'toggle',
-      label: 'Unable to work due to injury',
-      options: [],
-      validators: {
-        required: false,
-      },
-    },
-    {
-      type: 'checkbox',
-      label: 'Indicate your injuries',
-      options: [],
-      validators: {
-        required: false,
-      },
-    },
-    {
-      type: 'radio',
-      label: 'Favourite captain',
-      options: [],
-      validators: {
-        required: false,
-      },
-    },
-  ]),
+  builder: createFormArrayState(BUILDER_FORM_ID, []),
 };
 
 const rawReducer = createReducer(

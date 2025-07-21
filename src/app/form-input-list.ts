@@ -10,7 +10,6 @@ import { CdkDrag, CdkDragDrop, CdkDropList } from '@angular/cdk/drag-drop';
 import { NzTypographyModule } from 'ng-zorro-antd/typography';
 import { questionsActions } from './store/questions.actions';
 import { Store } from '@ngrx/store';
-import { Question } from './store';
 import { NzButtonModule } from 'ng-zorro-antd/button';
 import { NzSelectModule } from 'ng-zorro-antd/select';
 import { LowerCasePipe } from '@angular/common';
@@ -21,8 +20,8 @@ import { PushPipe } from '@ngrx/component';
 import { NzDividerModule } from 'ng-zorro-antd/divider';
 import { NzInputModule } from 'ng-zorro-antd/input';
 import { NzIconModule } from 'ng-zorro-antd/icon';
-import { remove } from 'immutable';
 import { NzCheckboxComponent } from 'ng-zorro-antd/checkbox';
+import { NzEmptyModule } from 'ng-zorro-antd/empty';
 
 @Component({
   selector: 'app-form-input-list',
@@ -41,31 +40,39 @@ import { NzCheckboxComponent } from 'ng-zorro-antd/checkbox';
     LowerCasePipe,
     PushPipe,
     NzCheckboxComponent,
+    NzEmptyModule,
   ],
   template: `
     @let form = form$ | ngrxPush;
 
-    @if (form) {
-      <h5 nz-typography>Personal information</h5>
+    <h5 nz-typography>Personal information</h5>
+
+    @if (form?.value?.length === 0) {
+      <nz-empty nzNotFoundImage="simple" />
+    }
+
+    @if (form && form.value.length > 0) {
       <div
         cdkDropList
         (cdkDropListDropped)="drop($event)"
         class="example-list w-full"
       >
-        @for (question of questions(); track question; let index = $index) {
+        @for (control of form.controls; track control.id; let index = $index) {
           <div cdkDrag class="example-box flex flex-col p-3 gap-y-2">
-            <input
-              nz-input
-              [ngrxFormControlState]="form.controls[index].controls.label"
-            />
-            <!--            <div class="flex justify-between">-->
-            <!--              <div>-->
-            <!--                {{ question.label }}-->
-            <!--              </div>-->
-            <!--              <div id="edit" class="invisible">-->
-            <!--                <a href="#">edit</a>-->
-            <!--              </div>-->
-            <!--            </div>-->
+            <div class="flex gap-x-2">
+              <input
+                nz-input
+                [ngrxFormControlState]="form.controls[index].controls.label"
+              />
+              <div id="edit">
+                <a
+                  href="javascript:void(0)"
+                  (click)="removeQuestion(form.id, index)"
+                >
+                  remove
+                </a>
+              </div>
+            </div>
             <nz-select
               nzPlaceHolder="Select an option"
               [nzDropdownMatchSelectWidth]="false"
@@ -192,8 +199,6 @@ export class FormInputList {
 
   protected readonly form$: Observable<FormArrayState<FormInput>>;
 
-  questions = input.required<Question[]>();
-
   constructor() {
     this.form$ = this.store.select(questionsSelectors.selectBuilder);
   }
@@ -215,5 +220,7 @@ export class FormInputList {
     this.store.dispatch(new RemoveArrayControlAction(id, index));
   }
 
-  protected readonly remove = remove;
+  removeQuestion(id: string, index: number) {
+    this.store.dispatch(new RemoveArrayControlAction(id, index));
+  }
 }

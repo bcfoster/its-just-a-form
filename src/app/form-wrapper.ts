@@ -1,4 +1,4 @@
-import { Component, input } from '@angular/core';
+import { Component, effect, inject, input } from '@angular/core';
 import { FormArrayState, NgrxFormsModule } from 'ngrx-forms';
 import { Form } from './store/questions.reducer';
 import { CheckboxInput } from './inputs/checkbox-input';
@@ -11,8 +11,11 @@ import {
 } from './inputs';
 import { LetDirective } from '@ngrx/component';
 import { NzFormModule } from 'ng-zorro-antd/form';
-import { Question } from './store';
 import { RadioInput } from './inputs/radio-input';
+import { Observable } from 'rxjs';
+import * as questionsSelectors from './store/questions.selectors';
+import { Store } from '@ngrx/store';
+import { NzTypographyComponent } from 'ng-zorro-antd/typography';
 
 @Component({
   selector: 'app-form-wrapper',
@@ -27,26 +30,26 @@ import { RadioInput } from './inputs/radio-input';
     CheckboxInput,
     NzFormModule,
     RadioInput,
+    NzTypographyComponent,
   ],
   template: `
+    <h3 nz-typography>Personal information</h3>
     <form
-      *ngrxLet="form() as form"
+      *ngrxLet="form$ as form"
       nz-form
       [ngrxFormState]="form"
       autocomplete="off"
     >
       <div class="flex flex-col gap-y-3">
-        @for (question of questions(); track question; let index = $index) {
+        @for (control of form.controls; track control.id; let index = $index) {
           <div class="flex flex-col">
             <nz-form-label
-              [nzRequired]="
-                form.controls[index].userDefinedProperties['required']
-              "
+              [nzRequired]="control.value.required"
               nzLabelAlign="left"
             >
-              {{ question.label }}
+              {{ control.value.label }}
             </nz-form-label>
-            @switch (question.type) {
+            @switch (control.value.type) {
               @case ('checkbox') {
                 <app-checkbox-input
                   [control]="form.controls[index].controls.someBooleans"
@@ -61,13 +64,17 @@ import { RadioInput } from './inputs/radio-input';
               @case ('radio') {
                 <app-radio-input
                   [control]="form.controls[index].controls.someText"
-                  [options]="question.options ?? []"
+                  [options]="
+                    form.controls[index].userDefinedProperties['options'] ?? []
+                  "
                 />
               }
               @case ('select') {
                 <app-select-input
                   [control]="form.controls[index].controls.someText"
-                  [options]="question.options ?? []"
+                  [options]="
+                    form.controls[index].userDefinedProperties['options'] ?? []
+                  "
                 />
               }
               @case ('text') {
@@ -91,9 +98,13 @@ import { RadioInput } from './inputs/radio-input';
       </div>
     </form>
   `,
-  styles: ``,
 })
 export class FormWrapper {
-  form = input.required<FormArrayState<Form>>();
-  questions = input.required<Question[]>();
+  private readonly store = inject(Store);
+
+  protected readonly form$: Observable<FormArrayState<Form>>;
+
+  constructor() {
+    this.form$ = this.store.select(questionsSelectors.selectGeneratedForm);
+  }
 }
