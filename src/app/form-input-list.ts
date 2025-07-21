@@ -22,6 +22,7 @@ import { NzDividerModule } from 'ng-zorro-antd/divider';
 import { NzInputModule } from 'ng-zorro-antd/input';
 import { NzIconModule } from 'ng-zorro-antd/icon';
 import { remove } from 'immutable';
+import { NzCheckboxComponent } from 'ng-zorro-antd/checkbox';
 
 @Component({
   selector: 'app-form-input-list',
@@ -39,6 +40,7 @@ import { remove } from 'immutable';
     NzSelectModule,
     LowerCasePipe,
     PushPipe,
+    NzCheckboxComponent,
   ],
   template: `
     @let form = form$ | ngrxPush;
@@ -122,6 +124,19 @@ import { remove } from 'immutable';
                 </button>
               </div>
             }
+
+            <div class="flex flex-col gap-y-2">
+              <div>Validators</div>
+              <label
+                nz-checkbox
+                [ngrxFormControlState]="
+                  form.controls[index].controls.validators.controls.required
+                "
+              >
+                Required
+              </label>
+              <br />
+            </div>
           </div>
         }
       </div>

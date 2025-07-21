@@ -28,7 +28,7 @@ export interface Form {
 }
 
 export interface Validators {
-  required?: boolean;
+  required: boolean;
 }
 
 export interface FormInput {
@@ -58,43 +58,57 @@ export const initialState: State = {
       type: 'text',
       label: 'Preferred first name',
       options: [],
-      validators: {},
+      validators: {
+        required: false,
+      },
     },
     {
       type: 'textarea',
       label: 'Additional details',
       options: [],
-      validators: {},
+      validators: {
+        required: false,
+      },
     },
     {
       type: 'date',
       label: 'Date of birth',
       options: [],
-      validators: {},
+      validators: {
+        required: false,
+      },
     },
     {
       type: 'select',
       label: 'Gender',
       options: [],
-      validators: {},
+      validators: {
+        required: false,
+      },
     },
     {
       type: 'toggle',
       label: 'Unable to work due to injury',
       options: [],
-      validators: {},
+      validators: {
+        required: false,
+      },
     },
     {
       type: 'checkbox',
       label: 'Indicate your injuries',
       options: [],
-      validators: {},
+      validators: {
+        required: false,
+      },
     },
     {
       type: 'radio',
       label: 'Favourite captain',
       options: [],
-      validators: {},
+      validators: {
+        required: false,
+      },
     },
   ]),
 };

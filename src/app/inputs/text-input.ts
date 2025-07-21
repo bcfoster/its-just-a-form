@@ -18,7 +18,7 @@ import { NzInputDirective } from 'ng-zorro-antd/input';
     }
   `,
   styles: `
-    input:focus {
+    input:focus.ngrx-forms-invalid {
       box-shadow: 0 0 0 2px lightpink;
     }
 

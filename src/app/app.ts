@@ -41,7 +41,7 @@ import { FormInputList } from './form-input-list';
     @if (form && questions) {
       <nz-splitter>
         <nz-splitter-panel nzDefaultSize="20%" nzMin="20%" nzMax="99%">
-          <div class="flex flex-col h-full p-3">
+          <div class="flex flex-col h-full p-3 gap-y-2">
             <div class="grow overflow-auto">
               <app-form-input-list [questions]="questions" />
             </div>
