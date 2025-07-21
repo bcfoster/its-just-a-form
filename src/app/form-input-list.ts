@@ -52,13 +52,9 @@ import { NzEmptyModule } from 'ng-zorro-antd/empty';
     }
 
     @if (form && form.value.length > 0) {
-      <div
-        cdkDropList
-        (cdkDropListDropped)="drop($event)"
-        class="example-list w-full"
-      >
+      <div cdkDropList (cdkDropListDropped)="drop($event)" class="example-list">
         @for (control of form.controls; track control.id; let index = $index) {
-          <div cdkDrag class="example-box flex flex-col p-3 gap-y-2">
+          <div cdkDrag class="example-box flex flex-col p-2 gap-y-2">
             <div class="flex gap-x-2">
               <input
                 nz-input
@@ -158,7 +154,7 @@ import { NzEmptyModule } from 'ng-zorro-antd/empty';
       border-bottom: solid 1px #ccc;
       color: rgba(0, 0, 0, 0.87);
       box-sizing: border-box;
-      /*cursor: move;*/
+      cursor: move;
     }
 
     .cdk-drag-preview {

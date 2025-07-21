@@ -17,19 +17,6 @@ import { NzInputDirective } from 'ng-zorro-antd/input';
       </span>
     }
   `,
-  styles: `
-    input:focus.ngrx-forms-invalid {
-      box-shadow: 0 0 0 2px lightpink;
-    }
-
-    .ngrx-forms-invalid.ngrx-forms-touched {
-      border-color: red;
-    }
-
-    .error {
-      color: red;
-    }
-  `,
 })
 export class TextInput {
   control = input.required<FormControlState<string | undefined> | undefined>();

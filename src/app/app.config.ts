@@ -20,6 +20,7 @@ import { FormsModule } from '@angular/forms';
 import { provideAnimationsAsync } from '@angular/platform-browser/animations/async';
 import { provideHttpClient } from '@angular/common/http';
 import { icons } from './icons-provider';
+import { QuestionEffects } from './store/question.effects';
 
 registerLocaleData(en);
 
@@ -28,7 +29,7 @@ export const appConfig: ApplicationConfig = {
     provideBrowserGlobalErrorListeners(),
     provideZonelessChangeDetection(),
     provideRouter(routes),
-    provideEffects(),
+    provideEffects([QuestionEffects]),
     provideStore(),
     provideStoreDevtools({ maxAge: 25, logOnly: !isDevMode() }),
     provideState(questionsFeature),
