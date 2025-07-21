@@ -16,6 +16,7 @@ export class QuestionEffects {
   move$ = createEffect(() =>
     this.actions$.pipe(
       ofType(questionsActions.move),
+      filter((action) => action.previousIndex !== action.currentIndex),
       withLatestFrom(this.store.select(questionSelectors.selectForms)),
       map(([action, form]) => {
         const inputs = [...form.controls.builder.value];
