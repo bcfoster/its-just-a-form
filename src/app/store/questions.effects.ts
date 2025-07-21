@@ -10,7 +10,7 @@ import {
   RemoveArrayControlAction,
   SetValueAction,
 } from 'ngrx-forms';
-import { initialPreview, PreviewForm } from './questions.reducer';
+import { initialPreview } from './questions.reducer';
 
 @Injectable()
 export class QuestionsEffects {
@@ -79,9 +79,7 @@ export class QuestionsEffects {
           }
         }),
       ),
-      map(
-        (inputs) => new SetValueAction<PreviewForm[]>('forms.preview', inputs),
-      ),
+      map((inputs) => new SetValueAction('forms.preview', inputs)),
     ),
   );
 }

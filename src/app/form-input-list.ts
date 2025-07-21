@@ -23,6 +23,7 @@ import { NzInputModule } from 'ng-zorro-antd/input';
 import { NzIconModule } from 'ng-zorro-antd/icon';
 import { NzCheckboxComponent } from 'ng-zorro-antd/checkbox';
 import { NzEmptyModule } from 'ng-zorro-antd/empty';
+import { InputListItem } from './input-list-item';
 
 @Component({
   selector: 'app-form-input-list',
@@ -42,6 +43,7 @@ import { NzEmptyModule } from 'ng-zorro-antd/empty';
     PushPipe,
     NzCheckboxComponent,
     NzEmptyModule,
+    InputListItem,
   ],
   template: `
     @let form = form$ | ngrxPush;
@@ -88,97 +90,10 @@ import { NzEmptyModule } from 'ng-zorro-antd/empty';
           let index = $index
         ) {
           <div cdkDrag class="example-box flex flex-col p-3 gap-y-2">
-            <div class="flex gap-x-2 items-center">
-              <input
-                nz-input
-                placeholder="Label text"
-                [ngrxFormControlState]="form.controls[index].controls.label"
-              />
-              @if (count > 1) {
-                <a
-                  href="javascript:void(0)"
-                  (click)="removeQuestion(form.id, index)"
-                >
-                  <nz-icon nzType="delete" nzTheme="outline" />
-                </a>
-              }
-            </div>
-            <nz-select
-              nzPlaceHolder="Select an option"
-              [nzDropdownMatchSelectWidth]="false"
-              [ngrxFormControlState]="form.controls[index].controls.type"
-            >
-              @for (
-                option of [
-                  'Checkbox',
-                  'Date',
-                  'Radio',
-                  'Select',
-                  'Text',
-                  'Textarea',
-                  'Toggle',
-                ];
-                track option
-              ) {
-                <nz-option
-                  [nzValue]="option | lowercase"
-                  [nzLabel]="option"
-                ></nz-option>
-              }
-            </nz-select>
-
-            @if (
-              form.controls[index].value.type == 'checkbox' ||
-              form.controls[index].value.type == 'radio' ||
-              form.controls[index].value.type == 'select'
-            ) {
-              @let options = form.controls[index].controls.options;
-
-              <div class="flex flex-col gap-y-2">
-                @if (options.value.length > 0) {
-                  <div>Options</div>
-                }
-                @for (
-                  control of options.controls;
-                  track control.id;
-                  let count = $count;
-                  let index = $index
-                ) {
-                  <div class="flex items-center gap-x-2">
-                    <input nz-input [ngrxFormControlState]="control" />
-                    @if (count > 1) {
-                      <a
-                        href="javascript:void(0);"
-                        (click)="removeOption(options.id, index)"
-                      >
-                        <nz-icon nzType="delete" nzTheme="outline" />
-                      </a>
-                    }
-                  </div>
-                }
-                <button
-                  nz-button
-                  nzType="link"
-                  nzBlock
-                  (click)="addOption(options.id)"
-                >
-                  Add option
-                </button>
-              </div>
-            }
-
-            <div class="flex flex-col gap-y-2">
-              <div>Validators</div>
-              <label
-                nz-checkbox
-                [ngrxFormControlState]="
-                  form.controls[index].controls.validators.controls.required
-                "
-              >
-                Required
-              </label>
-              <br />
-            </div>
+            <app-input-list-item
+              [form]="control"
+              (removed)="removeQuestion(form.id, index)"
+            />
           </div>
         }
       </div>
@@ -254,14 +169,6 @@ export class FormInputList {
         currentIndex: event.currentIndex,
       }),
     );
-  }
-
-  addOption(id: string) {
-    this.store.dispatch(new AddArrayControlAction(id, ''));
-  }
-
-  removeOption(id: string, index: number) {
-    this.store.dispatch(new RemoveArrayControlAction(id, index));
   }
 
   removeQuestion(id: string, index: number) {

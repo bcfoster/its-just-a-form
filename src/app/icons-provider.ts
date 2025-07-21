@@ -1,3 +1,3 @@
-import { SaveOutline } from '@ant-design/icons-angular/icons';
+import { SaveOutline, SettingOutline } from '@ant-design/icons-angular/icons';
 
-export const icons = [SaveOutline];
+export const icons = [SaveOutline, SettingOutline];

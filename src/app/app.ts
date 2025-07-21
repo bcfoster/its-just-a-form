@@ -1,4 +1,4 @@
-import { ChangeDetectionStrategy, Component, inject } from '@angular/core';
+import { Component, inject } from '@angular/core';
 import { NzSplitterModule } from 'ng-zorro-antd/splitter';
 import { NzButtonModule } from 'ng-zorro-antd/button';
 import { Store } from '@ngrx/store';
@@ -32,7 +32,7 @@ import { FormPreview } from './form-preview';
           </div>
           <div class="flex-none">
             <button nz-button nzType="primary" nzBlock (click)="addQuestion()">
-              Add question
+              Add new input
             </button>
           </div>
         </div>

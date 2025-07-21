@@ -35,7 +35,7 @@ export interface BuilderForm {
 
 export const initialBuilder: BuilderForm = {
   type: 'text',
-  label: '',
+  label: 'New input',
   options: [''],
   validators: {
     required: false,
@@ -56,7 +56,7 @@ export interface PreviewForm {
 
 export const initialPreview: PreviewForm = {
   type: 'text',
-  label: '',
+  label: 'New input',
   options: [],
   someText: '',
 };
