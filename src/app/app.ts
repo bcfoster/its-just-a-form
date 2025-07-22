@@ -25,6 +25,7 @@ import { PushPipe } from '@ngrx/component';
 import { NzPageHeaderModule } from 'ng-zorro-antd/page-header';
 import { NzBreadCrumbModule } from 'ng-zorro-antd/breadcrumb';
 import { questionsActions } from './store/questions.actions';
+import { NzSpaceModule } from 'ng-zorro-antd/space';
 
 @Component({
   selector: 'app-root',
@@ -41,30 +42,29 @@ import { questionsActions } from './store/questions.actions';
     NzPageHeaderModule,
     PushPipe,
     NzBreadCrumbModule,
+    NzSpaceModule,
   ],
-  styles: `
-    .header {
-      border-bottom: 2px solid;
-      border-color: #f5f5f5;
-      padding: 10px;
-    }
-  `,
   template: `
     @if (false) {
-      <nz-page-header nzTitle="Form Builder" nzSubtitle="This is a subtitle">
-        <nz-breadcrumb nz-page-header-breadcrumb>
-          <nz-breadcrumb-item>Sample experience</nz-breadcrumb-item>
-          <nz-breadcrumb-item>Form builder</nz-breadcrumb-item>
-        </nz-breadcrumb>
-      </nz-page-header>
+      <div style="box-shadow: rgba(0, 0, 0, 0.24) 0 3px 8px">
+        <nz-page-header nzTitle="Form Builder" nzSubtitle="">
+          <nz-page-header-title></nz-page-header-title>
+          <nz-page-header-subtitle></nz-page-header-subtitle>
+          <nz-page-header-extra>
+            <nz-space>
+              <button *nzSpaceItem nz-button nzType="primary">Search</button>
+            </nz-space>
+          </nz-page-header-extra>
+        </nz-page-header>
+      </div>
     }
 
     @let name = formName$ | ngrxPush;
     @if (name) {
       <nz-splitter>
         <nz-splitter-panel nzDefaultSize="20%" nzMin="20%" nzMax="99%">
-          <div class="flex flex-col h-full p-3 gap-y-2">
-            <div class="grow overflow-auto">
+          <div class="flex flex-col h-full px-3 py-4 gap-y-2">
+            <div class="grow">
               @let builderForm = builderForm$ | ngrxPush;
               @if (builderForm) {
                 <app-form-input-list [name]="name" [controls]="builderForm" />
