@@ -21,6 +21,7 @@ import { provideAnimationsAsync } from '@angular/platform-browser/animations/asy
 import { provideHttpClient } from '@angular/common/http';
 import { icons } from './icons-provider';
 import { QuestionsEffects } from './store/questions.effects';
+import { provideRouterStore } from '@ngrx/router-store';
 
 registerLocaleData(en);
 
@@ -38,5 +39,6 @@ export const appConfig: ApplicationConfig = {
     importProvidersFrom(FormsModule),
     provideAnimationsAsync(),
     provideHttpClient(),
-  ],
+    provideRouterStore()
+],
 };
