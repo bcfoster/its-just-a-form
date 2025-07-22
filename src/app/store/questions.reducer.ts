@@ -38,7 +38,7 @@ export interface BuilderForm {
 
 export const initialBuilder: BuilderForm = {
   type: 'text',
-  label: 'New input',
+  label: '',
   options: [''],
   validators: {
     required: false,
@@ -59,7 +59,7 @@ export interface PreviewForm {
 
 export const initialPreview: PreviewForm = {
   type: 'text',
-  label: 'New input',
+  label: '',
   options: [],
   someText: '',
 };
@@ -86,11 +86,7 @@ const rawReducer = createReducer(initialState, onNgrxForms());
 
 export const validateForms = updateGroup<Forms>({
   name: validate(required),
-  builder: updateArray(
-    updateGroup<BuilderForm>({
-      label: validate(required),
-    }),
-  ),
+  builder: updateArray(updateGroup<BuilderForm>({})),
   preview: updateArray<PreviewForm>(
     (group) => setUserDefinedProperty(group, 'required', true),
     (group) =>

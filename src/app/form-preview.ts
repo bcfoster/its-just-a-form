@@ -42,13 +42,15 @@ import { FormsModule } from '@angular/forms';
       <div class="flex flex-col gap-y-3">
         @for (control of controls().controls; track control.id) {
           <div class="flex flex-col">
-            <nz-form-label
-              [nzRequired]="control.value.required"
-              nzLabelAlign="left"
-              nzNoColon
-            >
-              {{ control.value.label }}
-            </nz-form-label>
+            @if (control.value.label !== '') {
+              <nz-form-label
+                [nzRequired]="control.value.required"
+                nzLabelAlign="left"
+                nzNoColon
+              >
+                {{ control.value.label }}
+              </nz-form-label>
+            }
             @switch (control.value.type) {
               @case ('checkbox') {
                 <app-checkbox-input
