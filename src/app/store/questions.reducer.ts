@@ -1,15 +1,17 @@
-import { createReducer } from '@ngrx/store';
+import { createReducer, on } from '@ngrx/store';
 import {
   createFormGroupState,
   FormGroupState,
   onNgrxForms,
   setUserDefinedProperty,
+  setValue,
   updateArray,
   updateGroup,
   validate,
   wrapReducerWithFormStateUpdate,
 } from 'ngrx-forms';
 import { required } from 'ngrx-forms/validation';
+import { formActions } from './form.actions';
 
 export const BUILDER_FORM_ID = 'forms.builder';
 export const PREVIEW_FORM_ID = 'forms.preview';
@@ -85,7 +87,16 @@ export const initialState: State = {
   }),
 };
 
-const rawReducer = createReducer(initialState, onNgrxForms());
+const rawReducer = createReducer(
+  initialState,
+  onNgrxForms(),
+  on(formActions.loaded, (state, action) => ({
+    ...state,
+    forms: updateGroup(state.forms, {
+      preview: setValue(action.form),
+    }),
+  })),
+);
 
 export const validateForms = updateGroup<Forms>({
   name: validate(required),

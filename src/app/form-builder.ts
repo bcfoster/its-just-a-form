@@ -67,7 +67,7 @@ import { NzSpaceModule } from 'ng-zorro-antd/space';
       }
 
       <nz-splitter>
-        <nz-splitter-panel nzDefaultSize="20%" nzMin="20%" nzMax="99%">
+        <nz-splitter-panel nzDefaultSize="25%" nzMin="20%" nzMax="99%">
           <div class="flex flex-col h-full px-3 py-4 gap-y-2">
             <div class="grow">
               <app-form-input-list [name]="vm.name" [controls]="vm.builder" />

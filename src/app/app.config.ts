@@ -21,7 +21,8 @@ import { provideAnimationsAsync } from '@angular/platform-browser/animations/asy
 import { provideHttpClient } from '@angular/common/http';
 import { icons } from './icons-provider';
 import { QuestionsEffects } from './store/questions.effects';
-import { provideRouterStore } from '@ngrx/router-store';
+import { provideRouterStore, routerReducer } from '@ngrx/router-store';
+import { FormEffects } from './store/form.effects';
 
 registerLocaleData(en);
 
@@ -30,8 +31,10 @@ export const appConfig: ApplicationConfig = {
     provideBrowserGlobalErrorListeners(),
     provideZonelessChangeDetection(),
     provideRouter(routes),
-    provideEffects([QuestionsEffects]),
-    provideStore(),
+    provideEffects([FormEffects, QuestionsEffects]),
+    provideStore({
+      router: routerReducer,
+    }),
     provideStoreDevtools({ maxAge: 25, logOnly: !isDevMode() }),
     provideState(questionsFeature),
     provideNzIcons(icons),
@@ -39,6 +42,6 @@ export const appConfig: ApplicationConfig = {
     importProvidersFrom(FormsModule),
     provideAnimationsAsync(),
     provideHttpClient(),
-    provideRouterStore()
-],
+    provideRouterStore(),
+  ],
 };
