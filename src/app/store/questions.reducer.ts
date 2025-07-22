@@ -50,6 +50,8 @@ export interface PreviewForm {
   type: string;
   label: string;
   options: string[];
+  // TODO: exploit this property to try and eliminate the 'some' duplication
+  value?: string | boolean | boolean[] | null;
   someText?: string;
   someBoolean?: boolean;
   someBooleans?: boolean[];
@@ -61,6 +63,7 @@ export const initialPreview: PreviewForm = {
   type: 'text',
   label: '',
   options: [],
+  value: '',
   someText: '',
 };
 

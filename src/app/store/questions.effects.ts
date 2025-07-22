@@ -2,7 +2,7 @@ import { inject, Injectable } from '@angular/core';
 import { Actions, createEffect, ofType } from '@ngrx/effects';
 import { questionsActions } from './questions.actions';
 import { Store } from '@ngrx/store';
-import { filter, map, withLatestFrom } from 'rxjs';
+import { filter, map, tap, withLatestFrom } from 'rxjs';
 import * as questionSelectors from './questions.selectors';
 import { moveItemInArray } from '@angular/cdk/drag-drop';
 import {
@@ -31,6 +31,15 @@ export class QuestionsEffects {
         moveItemInArray(inputs, from, to);
         return new SetValueAction(BUILDER_FORM_ID, inputs);
       }),
+    ),
+  );
+
+  save$ = createEffect(() =>
+    this.actions$.pipe(
+      ofType(questionsActions.save),
+      withLatestFrom(this.store.select(questionSelectors.selectBuilderForm)),
+      tap(([, form]) => console.log(JSON.stringify(form.value))),
+      map(() => questionsActions.saved()),
     ),
   );
 

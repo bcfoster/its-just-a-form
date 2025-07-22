@@ -22,6 +22,9 @@ import { FormPreview } from './form-preview';
 import { Observable } from 'rxjs';
 import * as questionsSelectors from './store/questions.selectors';
 import { PushPipe } from '@ngrx/component';
+import { NzPageHeaderModule } from 'ng-zorro-antd/page-header';
+import { NzBreadCrumbModule } from 'ng-zorro-antd/breadcrumb';
+import { questionsActions } from './store/questions.actions';
 
 @Component({
   selector: 'app-root',
@@ -35,9 +38,27 @@ import { PushPipe } from '@ngrx/component';
     FormPreview,
     FormInputList,
     FormPreview,
+    NzPageHeaderModule,
     PushPipe,
+    NzBreadCrumbModule,
   ],
+  styles: `
+    .header {
+      border-bottom: 2px solid;
+      border-color: #f5f5f5;
+      padding: 10px;
+    }
+  `,
   template: `
+    @if (false) {
+      <nz-page-header nzTitle="Form Builder" nzSubtitle="This is a subtitle">
+        <nz-breadcrumb nz-page-header-breadcrumb>
+          <nz-breadcrumb-item>Sample experience</nz-breadcrumb-item>
+          <nz-breadcrumb-item>Form builder</nz-breadcrumb-item>
+        </nz-breadcrumb>
+      </nz-page-header>
+    }
+
     @let name = formName$ | ngrxPush;
     @if (name) {
       <nz-splitter>
@@ -50,14 +71,19 @@ import { PushPipe } from '@ngrx/component';
               }
             </div>
             <div class="flex-none">
-              <button
-                nz-button
-                nzType="primary"
-                nzBlock
-                (click)="addQuestion()"
-              >
-                Add input
-              </button>
+              <div class="flex flex-col gap-y-3">
+                <button
+                  nz-button
+                  nzType="default"
+                  nzBlock
+                  (click)="addQuestion()"
+                >
+                  Add input
+                </button>
+                <button nz-button nzType="primary" nzBlock (click)="save()">
+                  Save
+                </button>
+              </div>
             </div>
           </div>
         </nz-splitter-panel>
@@ -90,5 +116,9 @@ export class App {
     this.store.dispatch(
       new AddArrayControlAction(BUILDER_FORM_ID, initialBuilder),
     );
+  }
+
+  save() {
+    this.store.dispatch(questionsActions.save());
   }
 }
