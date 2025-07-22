@@ -16,5 +16,5 @@ export const selectPreviewForm = createSelector(
 
 export const selectFormName = createSelector(
   selectForms,
-  (forms) => forms.value.name,
+  (forms) => forms.controls.name,
 );

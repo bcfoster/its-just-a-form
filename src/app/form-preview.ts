@@ -12,7 +12,7 @@ import {
 import { PushPipe } from '@ngrx/component';
 import { NzFormModule } from 'ng-zorro-antd/form';
 import { RadioInput } from './inputs/radio-input';
-import { Observable } from 'rxjs';
+import { map, Observable } from 'rxjs';
 import * as questionsSelectors from './store/questions.selectors';
 import { Store } from '@ngrx/store';
 import { NzTypographyComponent } from 'ng-zorro-antd/typography';
@@ -104,7 +104,9 @@ export class FormPreview {
   controls = input.required<FormArrayState<PreviewForm>>();
 
   constructor() {
-    this.name$ = this.store.select(questionsSelectors.selectFormName);
+    this.name$ = this.store
+      .select(questionsSelectors.selectFormName)
+      .pipe(map((control) => control.value));
   }
 
   submit(form: PreviewForm[]) {

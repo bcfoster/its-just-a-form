@@ -86,7 +86,11 @@ const rawReducer = createReducer(initialState, onNgrxForms());
 
 export const validateForms = updateGroup<Forms>({
   name: validate(required),
-  builder: updateArray(updateGroup({})),
+  builder: updateArray(
+    updateGroup<BuilderForm>({
+      label: validate(required),
+    }),
+  ),
   preview: updateArray<PreviewForm>(
     (group) => setUserDefinedProperty(group, 'required', true),
     (group) =>

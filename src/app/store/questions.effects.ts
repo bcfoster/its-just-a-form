@@ -24,11 +24,11 @@ export class QuestionsEffects {
   move$ = createEffect(() =>
     this.actions$.pipe(
       ofType(questionsActions.move),
-      filter((action) => action.previousIndex !== action.currentIndex),
+      filter((action) => action.from !== action.to),
       withLatestFrom(this.store.select(questionSelectors.selectForms)),
-      map(([action, form]) => {
+      map(([{ from, to }, form]) => {
         const inputs = [...form.controls.builder.value];
-        moveItemInArray(inputs, action.previousIndex, action.currentIndex);
+        moveItemInArray(inputs, from, to);
         return new SetValueAction(BUILDER_FORM_ID, inputs);
       }),
     ),
@@ -43,9 +43,9 @@ export class QuestionsEffects {
       ),
       filter((action) => action.controlId.startsWith(BUILDER_FORM_ID)),
       withLatestFrom(this.store.select(questionSelectors.selectBuilderForm)),
-      map(([_, form]) =>
+      map(([, form]) =>
         form.value.map((input) => {
-          let preview = {
+          const preview = {
             ...initialPreview,
             type: input.type,
             label: input.label,
