@@ -21,7 +21,7 @@ import { FormInputList } from './form-input-list';
 import { FormPreview } from './form-preview';
 import { Observable } from 'rxjs';
 import * as questionsSelectors from './store/questions.selectors';
-import { PushPipe } from '@ngrx/component';
+import { LetDirective } from '@ngrx/component';
 import { NzPageHeaderModule } from 'ng-zorro-antd/page-header';
 import { NzBreadCrumbModule } from 'ng-zorro-antd/breadcrumb';
 import { questionsActions } from './store/questions.actions';
@@ -40,35 +40,37 @@ import { NzSpaceModule } from 'ng-zorro-antd/space';
     FormInputList,
     FormPreview,
     NzPageHeaderModule,
-    PushPipe,
     NzBreadCrumbModule,
     NzSpaceModule,
+    LetDirective,
   ],
   template: `
-    @if (false) {
-      <div style="box-shadow: rgba(0, 0, 0, 0.24) 0 3px 8px">
-        <nz-page-header nzTitle="Form Builder" nzSubtitle="">
-          <nz-page-header-title></nz-page-header-title>
-          <nz-page-header-subtitle></nz-page-header-subtitle>
-          <nz-page-header-extra>
-            <nz-space>
-              <button *nzSpaceItem nz-button nzType="primary">Search</button>
-            </nz-space>
-          </nz-page-header-extra>
-        </nz-page-header>
-      </div>
-    }
+    <ng-container
+      *ngrxLet="{
+        name: formName$,
+        builder: builderForm$,
+        preview: previewForm$,
+      } as vm"
+    >
+      @if (false) {
+        <div style="box-shadow: rgba(0, 0, 0, 0.24) 0 3px 8px">
+          <nz-page-header nzTitle="Form Builder" nzSubtitle="">
+            <nz-page-header-title></nz-page-header-title>
+            <nz-page-header-subtitle></nz-page-header-subtitle>
+            <nz-page-header-extra>
+              <nz-space>
+                <button *nzSpaceItem nz-button nzType="primary">Search</button>
+              </nz-space>
+            </nz-page-header-extra>
+          </nz-page-header>
+        </div>
+      }
 
-    @let name = formName$ | ngrxPush;
-    @if (name) {
       <nz-splitter>
         <nz-splitter-panel nzDefaultSize="20%" nzMin="20%" nzMax="99%">
           <div class="flex flex-col h-full px-3 py-4 gap-y-2">
             <div class="grow">
-              @let builderForm = builderForm$ | ngrxPush;
-              @if (builderForm) {
-                <app-form-input-list [name]="name" [controls]="builderForm" />
-              }
+              <app-form-input-list [name]="vm.name" [controls]="vm.builder" />
             </div>
             <div class="flex-none">
               <div class="flex flex-col gap-y-3">
@@ -89,14 +91,11 @@ import { NzSpaceModule } from 'ng-zorro-antd/space';
         </nz-splitter-panel>
         <nz-splitter-panel>
           <div class="p-3">
-            @let previewForm = previewForm$ | ngrxPush;
-            @if (previewForm) {
-              <app-form-preview [controls]="previewForm" />
-            }
+            <app-form-preview [controls]="vm.preview" />
           </div>
         </nz-splitter-panel>
       </nz-splitter>
-    }
+    </ng-container>
   `,
 })
 export class FormBuilder {
