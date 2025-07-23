@@ -1,9 +1,9 @@
 import { inject, Injectable } from '@angular/core';
 import { Actions, createEffect, ofType } from '@ngrx/effects';
-import { questionsActions } from './questions.actions';
+import { formBuilderActions } from './form-builder.actions';
 import { Store } from '@ngrx/store';
 import { filter, map, tap, withLatestFrom } from 'rxjs';
-import * as questionSelectors from './questions.selectors';
+import * as formBuilderSelectors from './form-builder.selectors';
 import { moveItemInArray } from '@angular/cdk/drag-drop';
 import {
   AddArrayControlAction,
@@ -14,18 +14,18 @@ import {
   BUILDER_FORM_ID,
   initialPreview,
   PREVIEW_FORM_ID,
-} from './questions.reducer';
+} from './form-builder.reducer';
 
 @Injectable()
-export class QuestionsEffects {
+export class FormBuilderEffects {
   private readonly actions$ = inject(Actions);
   private readonly store = inject(Store);
 
   move$ = createEffect(() =>
     this.actions$.pipe(
-      ofType(questionsActions.move),
+      ofType(formBuilderActions.move),
       filter((action) => action.from !== action.to),
-      withLatestFrom(this.store.select(questionSelectors.selectForms)),
+      withLatestFrom(this.store.select(formBuilderSelectors.selectForms)),
       map(([{ from, to }, form]) => {
         const inputs = [...form.controls.builder.value];
         moveItemInArray(inputs, from, to);
@@ -36,10 +36,10 @@ export class QuestionsEffects {
 
   save$ = createEffect(() =>
     this.actions$.pipe(
-      ofType(questionsActions.save),
-      withLatestFrom(this.store.select(questionSelectors.selectBuilderForm)),
+      ofType(formBuilderActions.save),
+      withLatestFrom(this.store.select(formBuilderSelectors.selectBuilderForm)),
       tap(([, form]) => console.log(JSON.stringify(form.value))),
-      map(() => questionsActions.saved()),
+      map(() => formBuilderActions.saved()),
     ),
   );
 
@@ -51,7 +51,7 @@ export class QuestionsEffects {
         RemoveArrayControlAction.TYPE,
       ),
       filter((action) => action.controlId.startsWith(BUILDER_FORM_ID)),
-      withLatestFrom(this.store.select(questionSelectors.selectBuilderForm)),
+      withLatestFrom(this.store.select(formBuilderSelectors.selectBuilderForm)),
       map(([, form]) =>
         form.value.map((input) => {
           const preview = {

@@ -1,8 +1,7 @@
-import { questionsFeature } from './questions.feature';
+import { formBuilderFeature } from './form-builder.feature';
 import { createSelector } from '@ngrx/store';
 
-export const { name, reducer, selectForms, selectQuestionsState } =
-  questionsFeature;
+export const { name, reducer, selectForms } = formBuilderFeature;
 
 export const selectBuilderForm = createSelector(
   selectForms,

@@ -11,7 +11,7 @@ import { routes } from './app.routes';
 import { provideState, provideStore } from '@ngrx/store';
 import { provideEffects } from '@ngrx/effects';
 import { provideStoreDevtools } from '@ngrx/store-devtools';
-import { questionsFeature } from './store/questions.feature';
+import { formBuilderFeature } from './store/form-builder.feature';
 import { provideNzIcons } from 'ng-zorro-antd/icon';
 import { en_US, provideNzI18n } from 'ng-zorro-antd/i18n';
 import { registerLocaleData } from '@angular/common';
@@ -20,7 +20,7 @@ import { FormsModule } from '@angular/forms';
 import { provideAnimationsAsync } from '@angular/platform-browser/animations/async';
 import { provideHttpClient } from '@angular/common/http';
 import { icons } from './icons-provider';
-import { QuestionsEffects } from './store/questions.effects';
+import { FormBuilderEffects } from './store/form-builder.effects';
 import { provideRouterStore, routerReducer } from '@ngrx/router-store';
 import { FormEffects } from './store/form.effects';
 
@@ -31,12 +31,12 @@ export const appConfig: ApplicationConfig = {
     provideBrowserGlobalErrorListeners(),
     provideZonelessChangeDetection(),
     provideRouter(routes),
-    provideEffects([FormEffects, QuestionsEffects]),
+    provideEffects([FormEffects, FormBuilderEffects]),
     provideStore({
       router: routerReducer,
     }),
     provideStoreDevtools({ maxAge: 25, logOnly: !isDevMode() }),
-    provideState(questionsFeature),
+    provideState(formBuilderFeature),
     provideNzIcons(icons),
     provideNzI18n(en_US),
     importProvidersFrom(FormsModule),

@@ -1,6 +1,6 @@
 import { Component, inject, input } from '@angular/core';
 import { FormArrayState, NgrxFormsModule } from 'ngrx-forms';
-import { PreviewForm } from './store/questions.reducer';
+import { PreviewForm } from './store/form-builder.reducer';
 import { CheckboxInput } from './inputs/checkbox-input';
 import {
   DateInput,
@@ -13,7 +13,7 @@ import { PushPipe } from '@ngrx/component';
 import { NzFormModule } from 'ng-zorro-antd/form';
 import { RadioInput } from './inputs/radio-input';
 import { map, Observable } from 'rxjs';
-import * as questionsSelectors from './store/questions.selectors';
+import * as questionsSelectors from './store/form-builder.selectors';
 import { Store } from '@ngrx/store';
 import { NzTypographyComponent } from 'ng-zorro-antd/typography';
 import { NzButtonModule } from 'ng-zorro-antd/button';

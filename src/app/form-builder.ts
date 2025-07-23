@@ -15,16 +15,16 @@ import {
   BuilderForm,
   initialBuilder,
   PreviewForm,
-} from './store/questions.reducer';
+} from './store/form-builder.reducer';
 import { NzTypographyModule } from 'ng-zorro-antd/typography';
 import { FormInputList } from './form-input-list';
 import { FormPreview } from './form-preview';
 import { Observable } from 'rxjs';
-import * as questionsSelectors from './store/questions.selectors';
+import * as formBuilderSelectors from './store/form-builder.selectors';
 import { LetDirective } from '@ngrx/component';
 import { NzPageHeaderModule } from 'ng-zorro-antd/page-header';
 import { NzBreadCrumbModule } from 'ng-zorro-antd/breadcrumb';
-import { questionsActions } from './store/questions.actions';
+import { formBuilderActions } from './store/form-builder.actions';
 import { NzSpaceModule } from 'ng-zorro-antd/space';
 
 @Component({
@@ -106,9 +106,13 @@ export class FormBuilder {
   protected readonly formName$: Observable<FormControlState<string>>;
 
   constructor() {
-    this.builderForm$ = this.store.select(questionsSelectors.selectBuilderForm);
-    this.previewForm$ = this.store.select(questionsSelectors.selectPreviewForm);
-    this.formName$ = this.store.select(questionsSelectors.selectFormName);
+    this.builderForm$ = this.store.select(
+      formBuilderSelectors.selectBuilderForm,
+    );
+    this.previewForm$ = this.store.select(
+      formBuilderSelectors.selectPreviewForm,
+    );
+    this.formName$ = this.store.select(formBuilderSelectors.selectFormName);
   }
 
   addQuestion() {
@@ -118,6 +122,6 @@ export class FormBuilder {
   }
 
   save() {
-    this.store.dispatch(questionsActions.save());
+    this.store.dispatch(formBuilderActions.save());
   }
 }
