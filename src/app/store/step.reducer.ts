@@ -1,10 +1,5 @@
 import { createReducer, on } from '@ngrx/store';
-import {
-  createFormArrayState,
-  FormArrayState,
-  onNgrxForms,
-  setValue,
-} from 'ngrx-forms';
+import { createFormArrayState, FormArrayState, onNgrxForms } from 'ngrx-forms';
 import { stepActions } from './step.actions';
 
 export const FORM_ID = 'form';
@@ -41,10 +36,22 @@ export const initialState: State = {
   index: 0,
   steps: [
     {
-      id: 'id',
+      id: '1',
       type: 'form',
       name: 'Personal information',
-      data: '[{"type":"text","label":"","options":[],"value":"","someText":"Test"}]',
+      data: '[{"type":"text","label":"First name","options":[],"value":"","someText":"Brent"}]',
+    },
+    {
+      id: '2',
+      type: 'form',
+      name: 'Contact information',
+      data: '[{"type":"text","label":"Phone number","options":[],"value":"","someText":"604-828-4064"}]',
+    },
+    {
+      id: '3',
+      type: 'redirect',
+      name: 'Redirect',
+      data: 'https://www.google.ca/',
     },
   ],
 };
@@ -52,10 +59,6 @@ export const initialState: State = {
 export const reducer = createReducer(
   initialState,
   onNgrxForms(),
-  on(stepActions.loaded, (state) => ({
-    ...state,
-    form: setValue<Input[]>(state.form, JSON.parse(state.steps[0].data ?? '')),
-  })),
   on(stepActions.next, (state) => ({
     ...state,
     index: state.index + 1,

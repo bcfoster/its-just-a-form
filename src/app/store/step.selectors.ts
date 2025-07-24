@@ -13,5 +13,17 @@ export const {
 export const selectType = createSelector(
   selectSteps,
   selectIndex,
-  (steps, index) => steps[index].type,
+  (steps, index) => steps[index]?.type ?? '',
+);
+
+export const selectName = createSelector(
+  selectSteps,
+  selectIndex,
+  (steps, index) => steps[index]?.name ?? '',
+);
+
+export const selectData = createSelector(
+  selectSteps,
+  selectIndex,
+  (steps, index) => steps[index]?.data ?? '',
 );

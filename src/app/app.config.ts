@@ -24,6 +24,7 @@ import { FormBuilderEffects } from './store/form-builder.effects';
 import { provideRouterStore, routerReducer } from '@ngrx/router-store';
 import { FormEffects } from './store/form.effects';
 import { stepFeature } from './store/step.feature';
+import { StepEffects } from './store/step.effects';
 
 registerLocaleData(en);
 
@@ -32,7 +33,7 @@ export const appConfig: ApplicationConfig = {
     provideBrowserGlobalErrorListeners(),
     provideZonelessChangeDetection(),
     provideRouter(routes),
-    provideEffects([FormEffects, FormBuilderEffects]),
+    provideEffects([FormEffects, FormBuilderEffects, StepEffects]),
     provideStore({
       router: routerReducer,
     }),
