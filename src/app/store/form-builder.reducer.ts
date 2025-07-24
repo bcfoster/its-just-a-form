@@ -16,7 +16,7 @@ import { formActions } from './form.actions';
 export const BUILDER_FORM_ID = 'forms.builder';
 export const PREVIEW_FORM_ID = 'forms.preview';
 
-export type InputTypes =
+export type InputType =
   | 'checkbox'
   | 'date'
   | 'radio'
@@ -32,7 +32,7 @@ export interface Validators {
 }
 
 export interface BuilderForm {
-  type: InputTypes;
+  type: InputType;
   label: string;
   options: string[];
   validators: Validators;

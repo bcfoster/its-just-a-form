@@ -1,9 +1,10 @@
 import { Routes } from '@angular/router';
-import { FormHarness } from './form-harness';
+import { StepHarness } from './step-harness';
 import { FormBuilder } from './form-builder';
+import { FormHarness } from './form-harness';
 
 export const routes: Routes = [
-  { path: '', redirectTo: 'form', pathMatch: 'full' },
+  { path: '', component: StepHarness },
   { path: 'form', component: FormBuilder },
   { path: 'form/:id', component: FormHarness },
 ];

@@ -23,6 +23,7 @@ import { icons } from './icons-provider';
 import { FormBuilderEffects } from './store/form-builder.effects';
 import { provideRouterStore, routerReducer } from '@ngrx/router-store';
 import { FormEffects } from './store/form.effects';
+import { stepFeature } from './store/step.feature';
 
 registerLocaleData(en);
 
@@ -37,6 +38,7 @@ export const appConfig: ApplicationConfig = {
     }),
     provideStoreDevtools({ maxAge: 25, logOnly: !isDevMode() }),
     provideState(formBuilderFeature),
+    provideState(stepFeature),
     provideNzIcons(icons),
     provideNzI18n(en_US),
     importProvidersFrom(FormsModule),
