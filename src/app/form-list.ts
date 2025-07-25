@@ -5,9 +5,9 @@ import { NzTableModule } from 'ng-zorro-antd/table';
 import { NzDividerModule } from 'ng-zorro-antd/divider';
 import { Observable } from 'rxjs';
 import { PushPipe } from '@ngrx/component';
-import { Form } from './store/forms.reducer';
-import * as formsSelectors from './store/forms.selectors';
-import { formsActions } from './store/forms.actions';
+import { Form } from './store/forms/forms.reducer';
+import * as formsSelectors from './store/forms/forms.selectors';
+import { formsActions } from './store/forms/forms.actions';
 
 @Component({
   selector: 'app-form-list',

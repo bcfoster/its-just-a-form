@@ -11,7 +11,7 @@ import { routes } from './app.routes';
 import { provideState, provideStore } from '@ngrx/store';
 import { provideEffects } from '@ngrx/effects';
 import { provideStoreDevtools } from '@ngrx/store-devtools';
-import { formBuilderFeature } from './store/form-builder.feature';
+import { formBuilderFeature } from './store/form-builder/form-builder.feature';
 import { provideNzIcons } from 'ng-zorro-antd/icon';
 import { en_US, provideNzI18n } from 'ng-zorro-antd/i18n';
 import { registerLocaleData } from '@angular/common';
@@ -20,12 +20,12 @@ import { FormsModule } from '@angular/forms';
 import { provideAnimationsAsync } from '@angular/platform-browser/animations/async';
 import { provideHttpClient } from '@angular/common/http';
 import { icons } from './icons-provider';
-import { FormBuilderEffects } from './store/form-builder.effects';
+import { FormBuilderEffects } from './store/form-builder/form-builder.effects';
 import { provideRouterStore, routerReducer } from '@ngrx/router-store';
-import { FormEffects } from './store/form.effects';
-import { stepFeature } from './store/step.feature';
-import { StepEffects } from './store/step.effects';
-import { formsFeature } from './store/forms.feature';
+import { FormEffects } from './store/form/form.effects';
+import { stepFeature } from './store/step/step.feature';
+import { StepEffects } from './store/step/step.effects';
+import { formsFeature } from './store/forms/forms.feature';
 
 registerLocaleData(en);
 

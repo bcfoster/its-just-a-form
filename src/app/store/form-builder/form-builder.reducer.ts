@@ -11,7 +11,7 @@ import {
   wrapReducerWithFormStateUpdate,
 } from 'ngrx-forms';
 import { required } from 'ngrx-forms/validation';
-import { formActions } from './form.actions';
+import { formActions } from '../form/form.actions';
 
 export const BUILDER_FORM_ID = 'forms.builder';
 export const PREVIEW_FORM_ID = 'forms.preview';

@@ -15,16 +15,14 @@ import {
   BuilderForm,
   initialBuilder,
   PreviewForm,
-} from './store/form-builder.reducer';
+} from './store/form-builder/form-builder.reducer';
 import { NzTypographyModule } from 'ng-zorro-antd/typography';
-import { FormInputList } from './form-input-list';
-import { FormPreview } from './form-preview';
 import { Observable } from 'rxjs';
-import * as formBuilderSelectors from './store/form-builder.selectors';
+import * as formBuilderSelectors from './store/form-builder/form-builder.selectors';
 import { LetDirective } from '@ngrx/component';
 import { NzPageHeaderModule } from 'ng-zorro-antd/page-header';
 import { NzBreadCrumbModule } from 'ng-zorro-antd/breadcrumb';
-import { formBuilderActions } from './store/form-builder.actions';
+import { formBuilderActions } from './store/form-builder/form-builder.actions';
 import { NzSpaceModule } from 'ng-zorro-antd/space';
 
 @Component({
@@ -36,9 +34,6 @@ import { NzSpaceModule } from 'ng-zorro-antd/space';
     NzListModule,
     NzSplitterModule,
     NzTypographyModule,
-    FormPreview,
-    FormInputList,
-    FormPreview,
     NzPageHeaderModule,
     NzBreadCrumbModule,
     NzSpaceModule,

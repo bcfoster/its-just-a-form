@@ -3,7 +3,7 @@ import { Actions, createEffect, ofType } from '@ngrx/effects';
 import { Store } from '@ngrx/store';
 import { map, withLatestFrom } from 'rxjs';
 import { formActions } from './form.actions';
-import * as routerSelectors from './router.selectors';
+import * as routerSelectors from '../router.selectors';
 
 @Injectable()
 export class FormEffects {

@@ -4,11 +4,11 @@ import { NzFormModule } from 'ng-zorro-antd/form';
 import { Store } from '@ngrx/store';
 import { NzButtonModule } from 'ng-zorro-antd/button';
 import { FormsModule } from '@angular/forms';
-import { stepActions } from './store/step.actions';
+import { stepActions } from './store/step/step.actions';
 import { Observable } from 'rxjs';
-import { StepType } from './store/step.reducer';
+import { StepType } from './store/step/step.reducer';
 import { PushPipe } from '@ngrx/component';
-import * as stepSelectors from './store/step.selectors';
+import * as stepSelectors from './store/step/step.selectors';
 import { Form } from './form';
 
 @Component({

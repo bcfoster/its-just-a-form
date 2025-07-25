@@ -9,11 +9,14 @@ import {
 import { NzFormModule } from 'ng-zorro-antd/form';
 import { CdkDragDrop, CdkDropList } from '@angular/cdk/drag-drop';
 import { NzTypographyModule } from 'ng-zorro-antd/typography';
-import { formBuilderActions } from './store/form-builder.actions';
+import { formBuilderActions } from './store/form-builder/form-builder.actions';
 import { Store } from '@ngrx/store';
 import { NzButtonModule } from 'ng-zorro-antd/button';
 import { NzSelectModule } from 'ng-zorro-antd/select';
-import { BuilderForm, initialBuilder } from './store/form-builder.reducer';
+import {
+  BuilderForm,
+  initialBuilder,
+} from './store/form-builder/form-builder.reducer';
 import { NzDividerModule } from 'ng-zorro-antd/divider';
 import { NzInputModule } from 'ng-zorro-antd/input';
 import { NzIconModule } from 'ng-zorro-antd/icon';

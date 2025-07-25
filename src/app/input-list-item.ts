@@ -8,7 +8,7 @@ import {
   NgrxFormsModule,
   RemoveArrayControlAction,
 } from 'ngrx-forms';
-import { BuilderForm } from './store/form-builder.reducer';
+import { BuilderForm } from './store/form-builder/form-builder.reducer';
 import { NzInputDirective } from 'ng-zorro-antd/input';
 import { NzSelectModule } from 'ng-zorro-antd/select';
 import { LowerCasePipe, TitleCasePipe } from '@angular/common';

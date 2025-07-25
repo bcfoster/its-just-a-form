@@ -12,13 +12,13 @@ import { LetDirective } from '@ngrx/component';
 import { NzFormModule } from 'ng-zorro-antd/form';
 import { RadioInput } from './inputs/radio-input';
 import { Observable } from 'rxjs';
-import * as stepSelectors from './store/step.selectors';
+import * as stepSelectors from './store/step/step.selectors';
 import { Store } from '@ngrx/store';
 import { NzTypographyComponent } from 'ng-zorro-antd/typography';
 import { NzButtonModule } from 'ng-zorro-antd/button';
 import { FormsModule } from '@angular/forms';
-import { Input, Step } from './store/step.reducer';
-import { stepActions } from './store/step.actions';
+import { Input, Step } from './store/step/step.reducer';
+import { stepActions } from './store/step/step.actions';
 
 @Component({
   selector: 'app-form',

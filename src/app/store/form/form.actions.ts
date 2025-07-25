@@ -1,5 +1,5 @@
 import { createActionGroup, emptyProps, props } from '@ngrx/store';
-import { PreviewForm } from './form-builder.reducer';
+import { PreviewForm } from '../form-builder/form-builder.reducer';
 
 export const formActions = createActionGroup({
   source: 'Form',
