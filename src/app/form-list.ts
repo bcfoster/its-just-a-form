@@ -4,9 +4,10 @@ import { NzTypographyModule } from 'ng-zorro-antd/typography';
 import { NzTableModule } from 'ng-zorro-antd/table';
 import { NzDividerModule } from 'ng-zorro-antd/divider';
 import { Observable } from 'rxjs';
-import * as formSelectors from './store/forms.selectors';
 import { PushPipe } from '@ngrx/component';
 import { Form } from './store/forms.reducer';
+import * as formsSelectors from './store/forms.selectors';
+import { formsActions } from './store/forms.actions';
 
 @Component({
   selector: 'app-form-list',
@@ -31,9 +32,13 @@ import { Form } from './store/forms.reducer';
             <tr (click)="select(data)">
               <td>{{ data.name }}</td>
               <td>
-                <a>Action</a>
-                <nz-divider nzType="vertical"></nz-divider>
-                <a>Delete</a>
+                @if (false) {
+                  <a>action</a>
+                  <nz-divider nzType="vertical"></nz-divider>
+                }
+                <a href="javascript:void(0);" (click)="remove(data.id)">
+                  remove
+                </a>
               </td>
             </tr>
           }
@@ -48,10 +53,14 @@ export class FormList {
   protected readonly forms$: Observable<Form[]>;
 
   constructor() {
-    this.forms$ = this.store.select(formSelectors.selectForms);
+    this.forms$ = this.store.select(formsSelectors.selectAllForms);
   }
 
   select(form: Form) {
     console.log(JSON.stringify(form));
+  }
+
+  remove(id: string) {
+    this.store.dispatch(formsActions.remove({ id }));
   }
 }
