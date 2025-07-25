@@ -1,5 +1,4 @@
 import { createReducer, on } from '@ngrx/store';
-import { onNgrxForms } from 'ngrx-forms';
 
 export interface Form {
   id: string;
@@ -19,4 +18,4 @@ export const initialState: State = {
   ],
 };
 
-export const reducer = createReducer(initialState, onNgrxForms());
+export const reducer = createReducer(initialState);

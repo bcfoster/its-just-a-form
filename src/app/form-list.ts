@@ -12,27 +12,34 @@ import { Form } from './store/forms.reducer';
   selector: 'app-form-list',
   imports: [NzDividerModule, NzTableModule, NzTypographyModule, PushPipe],
   template: `
-    <h1 nz-typography>Forms</h1>
-    <nz-table #formTable [nzData]="(forms$ | ngrxPush) ?? []" nzSize="small">
-      <thead>
-        <tr>
-          <th>Name</th>
-          <th>Action</th>
-        </tr>
-      </thead>
-      <tbody>
-        @for (data of formTable.data; track data) {
-          <tr (click)="select(data)">
-            <td>{{ data.name }}</td>
-            <td>
-              <a>Action</a>
-              <nz-divider nzType="vertical"></nz-divider>
-              <a>Delete</a>
-            </td>
+    <div class="flex flex-col h-full">
+      <h1 nz-typography>Forms</h1>
+      <nz-table
+        #formTable
+        [nzData]="(forms$ | ngrxPush) ?? []"
+        nzFrontPagination="false"
+        nzSize="small"
+      >
+        <thead>
+          <tr>
+            <th>Name</th>
+            <th>Action</th>
           </tr>
-        }
-      </tbody>
-    </nz-table>
+        </thead>
+        <tbody>
+          @for (data of formTable.data; track data) {
+            <tr (click)="select(data)">
+              <td>{{ data.name }}</td>
+              <td>
+                <a>Action</a>
+                <nz-divider nzType="vertical"></nz-divider>
+                <a>Delete</a>
+              </td>
+            </tr>
+          }
+        </tbody>
+      </nz-table>
+    </div>
   `,
 })
 export class FormList {
