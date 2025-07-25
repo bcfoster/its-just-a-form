@@ -13,7 +13,7 @@ import { formsActions } from './store/forms/forms.actions';
   selector: 'app-form-list',
   imports: [NzDividerModule, NzTableModule, NzTypographyModule, PushPipe],
   template: `
-    <div class="flex flex-col h-full">
+    <div class="flex flex-col  p-3">
       <h1 nz-typography>Forms</h1>
       <nz-table
         #formTable
@@ -57,7 +57,7 @@ export class FormList {
   }
 
   select(form: Form) {
-    console.log(JSON.stringify(form));
+    this.store.dispatch(formsActions.loadForm({ form }));
   }
 
   remove(id: string) {

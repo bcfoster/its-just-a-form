@@ -6,13 +6,25 @@ import { formsActions } from './forms.actions';
 export interface Form {
   id: string;
   name: string;
-  data: string;
+  json: string;
 }
 
 const initialForms: Form[] = [
-  { id: uuidv7(), name: 'Personal information', data: '' },
-  { id: uuidv7(), name: 'Contact information', data: '' },
-  { id: uuidv7(), name: 'Employment information', data: '' },
+  {
+    id: uuidv7(),
+    name: 'Personal information',
+    json: '[{"type":"text","label":"First name","options":[""],"validators":{"required":false}}]',
+  },
+  {
+    id: uuidv7(),
+    name: 'Contact information',
+    json: '[{"type":"text","label":"Email address","options":[""],"validators":{"required":false}}]',
+  },
+  {
+    id: uuidv7(),
+    name: 'Employment information',
+    json: '[{"type":"text","label":"Name","options":[""],"validators":{"required":false}}]',
+  },
 ];
 
 export interface State extends EntityState<Form> {
@@ -38,6 +50,10 @@ export const initialState: State = adapter.setAll(
 
 export const reducer = createReducer(
   initialState,
+  on(formsActions.loadForm, (state, action) => ({
+    ...state,
+    selectedUserId: action.form.id,
+  })),
   on(formsActions.remove, (state, action) =>
     adapter.removeOne(action.id, state),
   ),

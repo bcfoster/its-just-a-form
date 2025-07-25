@@ -12,6 +12,7 @@ import {
 } from 'ngrx-forms';
 import { required } from 'ngrx-forms/validation';
 import { formActions } from '../form/form.actions';
+import { formsActions } from '../forms/forms.actions';
 
 export const BUILDER_FORM_ID = 'forms.builder';
 export const PREVIEW_FORM_ID = 'forms.preview';
@@ -94,6 +95,13 @@ const rawReducer = createReducer(
     ...state,
     forms: updateGroup(state.forms, {
       preview: setValue(action.form),
+    }),
+  })),
+  on(formsActions.loadForm, (state, action) => ({
+    ...state,
+    forms: updateGroup(state.forms, {
+      name: setValue(action.form.name),
+      builder: setValue<BuilderForm[]>(JSON.parse(action.form.json)),
     }),
   })),
 );
