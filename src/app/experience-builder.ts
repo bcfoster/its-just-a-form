@@ -26,10 +26,9 @@ import { NzPageHeaderModule } from 'ng-zorro-antd/page-header';
 import { NzBreadCrumbModule } from 'ng-zorro-antd/breadcrumb';
 import { formBuilderActions } from './store/form-builder.actions';
 import { NzSpaceModule } from 'ng-zorro-antd/space';
-import { FormList } from './form-list';
 
 @Component({
-  selector: 'app-root',
+  selector: 'app-experience-builder',
   imports: [
     NgrxFormsModule,
     NzButtonModule,
@@ -44,7 +43,6 @@ import { FormList } from './form-list';
     NzBreadCrumbModule,
     NzSpaceModule,
     LetDirective,
-    FormList,
   ],
   template: `
     <ng-container
@@ -53,58 +51,54 @@ import { FormList } from './form-list';
         builder: builderForm$,
         preview: previewForm$,
       } as vm"
-    >
-      @if (false) {
-        <div style="box-shadow: rgba(0, 0, 0, 0.24) 0 3px 8px">
-          <nz-page-header nzTitle="Form Builder" nzSubtitle="">
-            <nz-page-header-title></nz-page-header-title>
-            <nz-page-header-subtitle></nz-page-header-subtitle>
-            <nz-page-header-extra>
-              <nz-space>
-                <button *nzSpaceItem nz-button nzType="primary">Search</button>
-              </nz-space>
-            </nz-page-header-extra>
-          </nz-page-header>
-        </div>
-      }
+    ></ng-container>
+    <!--      @if (false) {-->
+    <!--        <div style="box-shadow: rgba(0, 0, 0, 0.24) 0 3px 8px">-->
+    <!--          <nz-page-header nzTitle="Form Builder" nzSubtitle="">-->
+    <!--            <nz-page-header-title></nz-page-header-title>-->
+    <!--            <nz-page-header-subtitle></nz-page-header-subtitle>-->
+    <!--            <nz-page-header-extra>-->
+    <!--              <nz-space>-->
+    <!--                <button *nzSpaceItem nz-button nzType="primary">Search</button>-->
+    <!--              </nz-space>-->
+    <!--            </nz-page-header-extra>-->
+    <!--          </nz-page-header>-->
+    <!--        </div>-->
+    <!--      }-->
 
-      <nz-splitter>
-        <nz-splitter-panel>
-          <app-form-list />
-        </nz-splitter-panel>
-        <!--        <nz-splitter-panel nzDefaultSize="25%" nzMin="20%" nzMax="99%">-->
-        <nz-splitter-panel>
-          <div class="flex flex-col h-full px-3 py-4 gap-y-2">
-            <div class="grow">
-              <app-form-input-list [name]="vm.name" [controls]="vm.builder" />
-            </div>
-            <div class="flex-none">
-              <div class="flex flex-col gap-y-3">
-                <button
-                  nz-button
-                  nzType="default"
-                  nzBlock
-                  (click)="addQuestion()"
-                >
-                  Add input
-                </button>
-                <button nz-button nzType="primary" nzBlock (click)="save()">
-                  Save
-                </button>
-              </div>
-            </div>
-          </div>
-        </nz-splitter-panel>
-        <nz-splitter-panel>
-          <div class="p-3">
-            <app-form-preview [controls]="vm.preview" />
-          </div>
-        </nz-splitter-panel>
-      </nz-splitter>
-    </ng-container>
+    <!--      <nz-splitter>-->
+    <!--        <nz-splitter-panel nzDefaultSize="25%" nzMin="20%" nzMax="99%">-->
+    <!--          <div class="flex flex-col h-full px-3 py-4 gap-y-2">-->
+    <!--            <div class="grow">-->
+    <!--              <app-form-input-list [name]="vm.name" [controls]="vm.builder" />-->
+    <!--            </div>-->
+    <!--            <div class="flex-none">-->
+    <!--              <div class="flex flex-col gap-y-3">-->
+    <!--                <button-->
+    <!--                  nz-button-->
+    <!--                  nzType="default"-->
+    <!--                  nzBlock-->
+    <!--                  (click)="addQuestion()"-->
+    <!--                >-->
+    <!--                  Add input-->
+    <!--                </button>-->
+    <!--                <button nz-button nzType="primary" nzBlock (click)="save()">-->
+    <!--                  Save-->
+    <!--                </button>-->
+    <!--              </div>-->
+    <!--            </div>-->
+    <!--          </div>-->
+    <!--        </nz-splitter-panel>-->
+    <!--        <nz-splitter-panel>-->
+    <!--          <div class="p-3">-->
+    <!--            <app-form-preview [controls]="vm.preview" />-->
+    <!--          </div>-->
+    <!--        </nz-splitter-panel>-->
+    <!--      </nz-splitter>-->
+    <!--    </ng-container>-->
   `,
 })
-export class FormBuilder {
+export class ExperienceBuilder {
   private readonly store = inject(Store);
 
   protected readonly builderForm$: Observable<FormArrayState<BuilderForm>>;

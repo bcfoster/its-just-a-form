@@ -25,6 +25,7 @@ import { provideRouterStore, routerReducer } from '@ngrx/router-store';
 import { FormEffects } from './store/form.effects';
 import { stepFeature } from './store/step.feature';
 import { StepEffects } from './store/step.effects';
+import { formsFeature } from './store/forms.feature';
 
 registerLocaleData(en);
 
@@ -40,6 +41,7 @@ export const appConfig: ApplicationConfig = {
     provideStoreDevtools({ maxAge: 25, logOnly: !isDevMode() }),
     provideState(formBuilderFeature),
     provideState(stepFeature),
+    provideState(formsFeature),
     provideNzIcons(icons),
     provideNzI18n(en_US),
     importProvidersFrom(FormsModule),
